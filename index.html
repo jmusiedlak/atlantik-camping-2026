@@ -44,6 +44,9 @@
   .tag{font-size:10px;padding:2px 7px;border-radius:var(--border-radius-md);background:var(--color-background-warning);color:var(--color-text-warning)}
   .pin{cursor:pointer}.lbl{font-size:12px;color:var(--color-text-secondary)}
   a{color:var(--color-text-info)}
+  .slbtn{position:absolute;top:50%;transform:translateY(-50%);width:26px;height:26px;border-radius:50%;border:none;background:rgba(0,0,0,.45);color:#fff;cursor:pointer;font-size:12px;line-height:1;display:flex;align-items:center;justify-content:center;z-index:2}
+  .slbtn:hover{background:rgba(0,0,0,.7)}
+  .slcount{position:absolute;bottom:6px;right:8px;background:rgba(0,0,0,.55);color:#fff;font-size:10px;padding:1px 7px;border-radius:8px;z-index:2}
   footer{margin-top:2rem;font-size:12px;color:var(--color-text-tertiary);border-top:.5px solid var(--color-border-tertiary);padding-top:1rem}
 </style>
 </head>
@@ -153,12 +156,23 @@ const CHECKED={
  27:"extern (secureholiday); 100 m Strand + Surfschule — direkt anfragen"
 };
 const IMG={
- 11:"https://medias.azko.fr/org-11395/site-17731/img/lodge_kenya_camping_ocean_carcan-6735df6a0c065.webp",
- 13:"https://camping-leporge.fr/wp-content/uploads/2023/12/plage-camping-la-grigne.jpg",
- 16:"https://medias.yellohvillage.fr/7/lous_seurrots_new_82fe09b72f.jpg",
- 18:"https://www.camping-moisan.com/wp-content/uploads/2025/03/visionneuse-1.jpg",
- 21:"https://www.campinglacivelle.fr/wp-content/uploads/2023/06/vue-ciel-piscine.jpg",
- 22:"https://img.sandayagroupe.eu/images/_aliases/original_optimized/8/0/8/6/616808-59-fre-FR/711cc5ae3454-Web_crop-OND_Infrastructures_011.jpg"
+ 1:["https://www.campingdespins.fr/wp-content/uploads/2021/03/camping-pins-soulac-cta-ecolodges.jpg","https://www.campingdespins.fr/wp-content/uploads/2021/05/mobil-home-location-soulac-1.jpg","https://www.campingdespins.fr/wp-content/uploads/2021/03/camping-pins-soulac-cta-emplacements-tente.jpg"],
+ 3:["https://www.camping-eurosol.com/wp-content/uploads/2025/10/2025_Romanee_Eurosol_Plage_012.jpg","https://www.camping-eurosol.com/wp-content/uploads/2025/10/2025_Romanee_Eurosol_Espace_aquatique_001.jpg","https://www.camping-eurosol.com/wp-content/uploads/2024/07/Eurosol-2-1000x1000.jpeg"],
+ 7:["https://www.camping-le-raguenes-plage.com/wp-content/themes/plune/assets/img/ragenes-home.jpg","https://www.camping-le-raguenes-plage.com/wp-content/uploads/2020/04/piscine.-raguenesjpg.jpg","https://www.camping-le-raguenes-plage.com/wp-content/uploads/2020/02/cornuailles.jpg"],
+ 9:["https://www.vejersfamiliecamping.dk/wp-content/uploads/2017/03/vejers-1.jpg","https://www.vejersfamiliecamping.dk/wp-content/uploads/2017/03/vejersfamiliecamping_1.jpg","https://www.vejersfamiliecamping.dk/wp-content/uploads/2017/03/vejersfamiliecamping_5.jpg","https://www.vejersfamiliecamping.dk/wp-content/uploads/2017/04/img_4183.jpg"],
+ 10:["https://www.nissumfjordcamping.dk/images/artikelbilleder/nissum-fjord-camping-vestkysten-vesterhavet-ulfborg-holstebro-ringkobing.webp","https://www.nissumfjordcamping.dk/images/faciliteter/playground_400px.webp","https://www.nissumfjordcamping.dk/images/faciliteter/pool_400px.webp"],
+ 11:["https://medias.azko.fr/org-11395/site-17731/img/carcans_plage_2-1200x900.webp","https://medias.azko.fr/org-11395/site-17731/img/carcans_surf_1-1200x900.webp","https://medias.azko.fr/org-11395/site-17731/img/emplacement_tente_carcans_campin.webp","https://medias.azko.fr/org-11395/site-17731/img/lodge_kenya_camping_ocean_carcan-6735df6a0c065.webp"],
+ 13:["https://camping-leporge.fr/wp-content/uploads/2023/12/plage-camping-la-grigne.jpg","https://camping-leporge.fr/wp-content/uploads/2023/06/accueil-camping-la-grigne.jpg","https://camping-leporge.fr/wp-content/uploads/2023/12/velo-libre-de-droit-2-scaled.jpg"],
+ 15:["https://www.camping-vagues-oceanes.com/sites/default/files/styles/slider/public/etab_visuel/slider-01-marina-landes-vue-aerienne-fr-85016525_0.jpg","https://www.camping-vagues-oceanes.com/sites/default/files/styles/slider/public/etab_visuel/marina_landes_2025_plage-85016528_0.jpg","https://www.camping-vagues-oceanes.com/sites/default/files/styles/slider/public/etab_visuel/slider_toboggans_nouveaute_marina_landes_2024_fr-85016527.jpg"],
+ 16:["https://medias.yellohvillage.fr/7/Galerie_Lous_Seurrots_1900x1400px_1_baf188f637.jpg","https://medias.yellohvillage.fr/7/Galerie_Lous_Seurrots_1900x1400px_2_1d4e94ec0e.jpg","https://medias.yellohvillage.fr/7/Galerie_Lous_Seurrots_1900x1400px_3_f05754c002.jpg","https://medias.yellohvillage.fr/7/Galerie_Lous_Seurrots_1900x1400px_4_5a8039d1bd.jpg"],
+ 17:["https://www.camping-les-cigales.fr/wp-content/uploads/2024/04/bord-de-mer-1.png","https://www.camping-les-cigales.fr/wp-content/uploads/2024/04/vacances-coeur-des-landes.jpg","https://www.camping-les-cigales.fr/wp-content/uploads/2024/04/convivialite-cadre-naturel-landes.jpg"],
+ 18:["https://www.camping-moisan.com/wp-content/uploads/2025/03/visionneuse-1.jpg"],
+ 21:["https://www.campinglacivelle.fr/wp-content/uploads/2023/06/vue-ciel-piscine.jpg","https://www.campinglacivelle.fr/wp-content/uploads/2018/12/FORET-LANDES_home.jpg","https://www.campinglacivelle.fr/wp-content/uploads/2018/06/slide-home-001.jpg","https://www.campinglacivelle.fr/wp-content/uploads/2018/06/slide-home-002.jpg"],
+ 22:["https://img.sandayagroupe.eu/images/_aliases/original_optimized/8/0/8/6/616808-59-fre-FR/711cc5ae3454-Web_crop-OND_Infrastructures_011.jpg"],
+ 25:["https://www.campingdelatorche.fr/uploads/slider/home-webp/camping-finistere-home-1.webp","https://www.campingdelatorche.fr/uploads/img-home/home-piscine.jpg","https://www.campingdelatorche.fr/uploads/img-home/home-heb01.jpg"],
+ 27:["https://www.camping-crozon-laplagedegoulien.com/uploads/slider/home/camping-finistere-home-1.jpg","https://www.camping-crozon-laplagedegoulien.com/uploads/slider/home/camping-presqu-ile-de-crozon-home-2.jpg","https://www.camping-crozon-laplagedegoulien.com/uploads/img-home/crozon-plage.jpg"],
+ 29:["https://soendervigcamping.dk/wp-content/uploads/2022/09/220812_SPP_4462.jpg","https://soendervigcamping.dk/wp-content/uploads/2022/06/campinghygge3.jpg","https://soendervigcamping.dk/wp-content/uploads/2022/09/220729_SPP_0055-1.jpg"],
+ 30:["https://sp-ao.shortpixel.ai/client/to_auto,q_glossy,ret_img,w_845,h_684/https://nystrupcampingklitmoller.dk/wordpress/wp-content/uploads/2025/07/DJI_0011-845x684.jpg","https://sp-ao.shortpixel.ai/client/to_auto,q_glossy,ret_img,w_1030,h_1030/https://nystrupcampingklitmoller.dk/wordpress/wp-content/uploads/2025/09/Nystrup-camping-plads_YDE-Media-46_forside-1030x1030.jpg","https://sp-ao.shortpixel.ai/client/to_auto,q_glossy,ret_img,w_1030,h_1030/https://nystrupcampingklitmoller.dk/wordpress/wp-content/uploads/2025/07/Nystrup-camping-Klitmoeller_shelter_kvadrat-1030x1030.jpg"]
 };
 const SITE={
  1:"https://www.campingdespins.fr/",2:"https://www.camping-cap.com/",3:"https://www.camping-eurosol.com/",4:"https://www.camping-saint-martin.fr/",5:"https://www.levieuxport.com/",
@@ -168,12 +182,14 @@ const SITE={
  26:"https://www.camping-penmarch.fr/",27:"https://www.camping-crozon-laplagedegoulien.com/",28:"https://www.campinglittoral.net/",
  29:"https://soendervigcamping.dk/",30:"https://www.nystrupcampingklitmoller.dk/",31:"https://hvidesandecamping.dk/"
 };
-function imgSrc(d){if(IMG[d.id])return IMG[d.id];if(SITE[d.id])return "https://image.thum.io/get/width/600/crop/450/noanimate/"+SITE[d.id];return null;}
-function imgBox(d,big){const u=imgSrc(d);const dim=big?'width:90px;height:90px':'width:100%;height:104px';
- return `<div style="${dim};position:relative;border-radius:var(--border-radius-md);overflow:hidden;background:var(--color-background-secondary);flex-shrink:0">`
-  +`<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">${illus(d.reg)}</div>`
-  +(u?`<img src="${u}" alt="${d.n}" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'">`:'')
-  +`</div>`;}
+function imgUrls(d){const v=IMG[d.id];if(Array.isArray(v))return v.slice();if(v)return [v];if(SITE[d.id])return ["https://image.thum.io/get/width/640/crop/440/noanimate/"+SITE[d.id]];return [];}
+function imgBox(d,mode){const urls=imgUrls(d);const h=mode==='detail'?'190px':'150px';const cid='sl-'+d.id+'-'+(mode==='detail'?'d':'c');
+ let s=`<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">${illus(d.reg)}</div>`;
+ urls.forEach((u,i)=>{s+=`<img src="${u}" alt="${d.n}" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;${i?'display:none':''}" onerror="this.remove()">`;});
+ let nav='';
+ if(urls.length>1)nav=`<button class="slbtn" style="left:6px" aria-label="vorheriges Foto" onclick="slide('${cid}',-1,event)">&#10094;</button><button class="slbtn" style="right:6px" aria-label="nächstes Foto" onclick="slide('${cid}',1,event)">&#10095;</button><span class="slcount" id="${cid}-c">1/${urls.length}</span>`;
+ return `<div id="${cid}" style="width:100%;height:${h};position:relative;border-radius:var(--border-radius-md);overflow:hidden;background:var(--color-background-secondary)">${s}${nav}</div>`;}
+function slide(cid,dir,e){if(e)e.stopPropagation();const box=document.getElementById(cid);if(!box)return;const imgs=[...box.querySelectorAll('img')];if(imgs.length<2)return;let cur=imgs.findIndex(im=>im.style.display!=='none');if(cur<0)cur=0;imgs[cur].style.display='none';const nx=(cur+dir+imgs.length)%imgs.length;imgs[nx].style.display='';const c=document.getElementById(cid+'-c');if(c)c.textContent=(nx+1)+'/'+imgs.length;}
 const map=L.map('mapwrap',{scrollWheelZoom:true});
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'© OpenStreetMap'}).addTo(map);
 let sel=null,reg='all',sort='status',onlyAvail=false,onlyBudget=false;
@@ -198,9 +214,9 @@ function depLabel(d){
  return d.lat>=44.6?'Gironde · Dép. 33':'Landes · Dép. 40';
 }
 function detailHtml(d){
-  return `<div style="background:var(--color-background-primary);border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.15rem;display:flex;gap:14px;align-items:flex-start">
-    <div style="flex-shrink:0">${imgBox(d,true)}</div>
-    <div style="flex:1;min-width:0">
+  return `<div style="background:var(--color-background-primary);border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.15rem">
+    <div style="margin:-1rem -1.15rem .9rem">${imgBox(d,'detail')}</div>
+    <div style="min-width:0">
       <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:2px">
         <span style="width:10px;height:10px;border-radius:50%;background:${REG[d.reg].color};flex-shrink:0"></span>
         ${flagSvg(d.reg)}<span style="font-size:16px;font-weight:500">${d.n}</span><span class="lbl">· ${d.area} · ${depLabel(d)}</span>${badge(d)}
@@ -221,7 +237,7 @@ function metric(ic,l,v){return `<div style="background:var(--color-background-se
 function illus(r){const c=REG[r].color;return `<svg width="74" height="74" viewBox="0 0 74 74" aria-hidden="true"><rect width="74" height="74" rx="10" fill="${c}" opacity="0.12"/><path d="M20 50 l8-20 8 20z" fill="${c}" opacity="0.85"/><path d="M14 50 l6-15 6 15z" fill="${c}" opacity="0.55"/><circle cx="54" cy="22" r="7" fill="${c}" opacity="0.6"/><path d="M8 56 q10 -7 18 0 t18 0 t18 0" stroke="${c}" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg>`;}
 function cardHtml(d){
   return `<div class="cmp-card ${sel===d.id?'sel':''} ${d.tone==='danger'?'out':''}" data-id="${d.id}">
-    <div style="margin-bottom:8px">${imgBox(d,false)}</div>
+    <div style="margin:-.85rem -1rem .7rem">${imgBox(d,'card')}</div>
     <div style="display:flex;align-items:center;gap:7px;margin-bottom:3px">
       <span style="width:9px;height:9px;border-radius:50%;background:${REG[d.reg].color};flex-shrink:0"></span>
       <span style="font-size:15px;font-weight:500;line-height:1.2">${d.n}</span>
