@@ -216,7 +216,8 @@ map.fitBounds(L.latLngBounds(D.map(d=>[d.lat,d.lng]).concat([[HOME.lat,HOME.lng]
 const toneCss={success:['--color-background-success','--color-text-success'],info:['--color-background-info','--color-text-info'],warning:['--color-background-warning','--color-text-warning'],danger:['--color-background-danger','--color-text-danger']};
 function surfDots(n){let s='';for(let i=1;i<=3;i++)s+=`<span style="color:${i<=n?'var(--color-text-primary)':'var(--color-text-tertiary)'}">●</span>`;return s;}
 function statusIcon(t){return t==='success'?'ti-circle-check':t==='warning'?'ti-alert-triangle':t==='danger'?'ti-circle-x':'ti-clock';}
-function badge(d){const[bg,fg]=toneCss[d.tone];return `<span class="badge" style="background:var(${bg});color:var(${fg})"><i class="ti ${statusIcon(d.tone)}" aria-hidden="true"></i>${d.status}</span>`;}
+const SENT=new Set([3,4,11,12,13,14,15,16,17,18,19,25,26,27,28,30,31]);
+function badge(d){if(SENT.has(d.id))return `<span class="badge" style="background:var(--color-background-info);color:var(--color-text-info)"><i class="ti ti-mail" aria-hidden="true"></i>Anfrage gesendet · 22.06.</span>`;const[bg,fg]=toneCss[d.tone];return `<span class="badge" style="background:var(${bg});color:var(${fg})"><i class="ti ${statusIcon(d.tone)}" aria-hidden="true"></i>${d.status}</span>`;}
 function priceFull(d){return d.price==null?'auf Anfrage':(d.ptext+(d.est?' · Schätzung':' · live')+(d.over?' · über Budget':''));}
 function flagSvg(reg){return reg==='daenemark'
  ?'<svg width="16" height="12" viewBox="0 0 37 28" style="border:0.5px solid var(--color-border-tertiary);border-radius:2px;vertical-align:-2px;flex-shrink:0" aria-hidden="true"><rect width="37" height="28" fill="#C8102E"/><rect x="12" width="4" height="28" fill="#fff"/><rect y="12" width="37" height="4" fill="#fff"/></svg>'
