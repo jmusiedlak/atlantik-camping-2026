@@ -6,6 +6,7 @@
 <title>Campingplätze Atlantik · Bretagne · Dänemark — Sommer 2026</title>
 <meta name="description" content="Interaktive Übersicht möglicher Campingplätze für unsere Atlantik-Reise im Juli 2026 — mit Fahrzeit ab Köln, Preis, Surf-Eignung und Verfügbarkeit.">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
 <style>
   :root{
     --color-background-primary:#ffffff;--color-background-secondary:#f4f3ed;--color-background-tertiary:#eceae2;
@@ -73,7 +74,7 @@
     <i class="ti ti-calendar-event" aria-hidden="true" style="font-size:18px;flex-shrink:0"></i>
     <span><span style="font-weight:500">Verfügbarkeit/Status gelten für dieses Reisefenster:</span> Anreise <b style="font-weight:500">20.–22.07.2026</b> · Abreise <b style="font-weight:500">29.–31.07.2026</b> · ~9 Nächte · 2 Erw. + Kleinkind (2 J.) · Daten flexibel</span>
   </div>
-  <div id="mapwrap" style="background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:6px"></div>
+  <div id="mapwrap" style="height:400px;border-radius:var(--border-radius-lg);overflow:hidden;border:0.5px solid var(--color-border-tertiary)"></div>
 
   <div style="display:flex;flex-wrap:wrap;gap:14px;margin:.5rem 2px .35rem;font-size:12px;color:var(--color-text-secondary)">
     <span style="display:flex;align-items:center;gap:5px"><span style="width:11px;height:11px;border-radius:50%;background:#D85A30"></span>Atlantik</span>
@@ -94,8 +95,7 @@
   <footer>Stand 22.06.2026 · Fahrzeiten/-km ab Köln (Titusstr.) sind Straßen-Schätzwerte · einige Preise geschätzt · Verfügbarkeit kann sich kurzfristig ändern. Erstellt zur gemeinsamen Abstimmung.</footer>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 const REG={atlantik:{name:"Atlantik (Landes/Médoc)",color:"#D85A30"},bretagne:{name:"Bretagne",color:"#1D9E75"},daenemark:{name:"Dänemark",color:"#378ADD"}};
 const HOME={lat:50.94,lng:6.96,color:"#BA7517"};
@@ -174,39 +174,16 @@ function imgBox(d,big){const u=imgSrc(d);const dim=big?'width:90px;height:90px':
   +`<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">${illus(d.reg)}</div>`
   +(u?`<img src="${u}" alt="${d.n}" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'">`:'')
   +`</div>`;}
-const isDark=matchMedia('(prefers-color-scheme: dark)').matches;
-const W=900,H=520;
-const proj=d3.geoMercator().fitExtent([[28,18],[W-22,H-18]],{type:"Polygon",coordinates:[[[-5.5,42.6],[9.6,42.6],[9.6,57.6],[-5.5,57.6],[-5.5,42.6]]]});
-const svg=d3.select('#mapwrap').append('svg').attr('viewBox',`0 0 ${W} ${H}`).attr('width','100%').attr('role','img').attr('aria-label','Karte der Campingplatz-Optionen');
-const gLand=svg.append('g'),gLink=svg.append('g'),gPin=svg.append('g');
-const path=d3.geoPath(proj);
-d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(w=>{
-  gLand.selectAll('path').data(topojson.feature(w,w.objects.countries).features).join('path')
-   .attr('d',path).attr('fill',isDark?'rgba(255,255,255,0.07)':'rgba(0,0,0,0.055)')
-   .attr('stroke',isDark?'rgba(255,255,255,0.18)':'rgba(0,0,0,0.16)').attr('stroke-width',0.6);
-}).catch(()=>{});
-const hp=proj([HOME.lng,HOME.lat]);
-gPin.append('path').attr('d',d3.symbol(d3.symbolDiamond,150)()).attr('transform',`translate(${hp[0]},${hp[1]})`).attr('fill',HOME.color).attr('stroke',isDark?'#1c1c1a':'#fff').attr('stroke-width',1.5);
-gPin.append('text').attr('x',hp[0]+12).attr('y',hp[1]+4).text('Köln').attr('font-size',13).attr('fill',isDark?'#FAC775':'#854F0B').attr('font-weight',500);
-
+const map=L.map('mapwrap',{scrollWheelZoom:true});
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'© OpenStreetMap'}).addTo(map);
 let sel=null,reg='all',sort='status',onlyAvail=false,onlyBudget=false;
 function avail(d){return d.tone==='success'||d.tone==='warning';}
-const pins=gPin.selectAll('g.pin').data(D).join('g').attr('class','pin').on('click',(e,d)=>select(d.id));
-pins.append('circle').attr('cx',d=>proj([d.lng,d.lat])[0]).attr('cy',d=>proj([d.lng,d.lat])[1]);
-function stylePins(){
-  pins.select('circle')
-   .attr('r',d=>sel===d.id?12:(d.tone==='warning'?7.5:8))
-   .attr('fill',d=>d.tone==='danger'?'#A32D2D':REG[d.reg].color)
-   .attr('fill-opacity',d=>d.tone==='info'?0.45:(d.tone==='danger'?0.3:1))
-   .attr('stroke',d=>d.tone==='warning'?'#BA7517':(d.tone==='danger'?'#A32D2D':(isDark?'#1c1c1a':'#fff')))
-   .attr('stroke-width',d=>sel===d.id?3:(d.tone==='warning'?2.6:1.8))
-   .attr('stroke-dasharray',d=>(d.tone==='info'||d.tone==='danger')?'2.5 2':null);
-}
-function drawLink(d){gLink.selectAll('*').remove();if(!d)return;const p=proj([d.lng,d.lat]);
-  gLink.append('line').attr('x1',hp[0]).attr('y1',hp[1]).attr('x2',p[0]).attr('y2',p[1]).attr('stroke',REG[d.reg].color).attr('stroke-width',1.4).attr('stroke-dasharray','4 4').attr('opacity',0.8);
-  gLink.append('rect').attr('x',(hp[0]+p[0])/2-34).attr('y',(hp[1]+p[1])/2-11).attr('width',68).attr('height',20).attr('rx',10).attr('fill',isDark?'#26211c':'#FAEEDA').attr('stroke',REG[d.reg].color).attr('stroke-width',0.5);
-  gLink.append('text').attr('x',(hp[0]+p[0])/2).attr('y',(hp[1]+p[1])/2+3).attr('text-anchor','middle').attr('font-size',12).attr('fill',isDark?'#FAC775':'#854F0B').text('ca. '+d.hours+' h');
-}
+L.circleMarker([HOME.lat,HOME.lng],{radius:8,fillColor:HOME.color,color:'#fff',weight:2,fillOpacity:1}).addTo(map).bindTooltip('Köln (Start)');
+const markers={};
+function mStyle(d){return {radius:sel===d.id?11:7,fillColor:d.tone==='danger'?'#A32D2D':REG[d.reg].color,color:d.tone==='warning'?'#BA7517':(d.tone==='danger'?'#A32D2D':'#fff'),weight:sel===d.id?3:2,fillOpacity:d.tone==='info'?0.55:0.95};}
+D.forEach(d=>{const m=L.circleMarker([d.lat,d.lng],mStyle(d)).bindTooltip(d.n+' — '+d.area);m.on('click',()=>select(d.id,false));markers[d.id]=m;});
+function refreshMarkers(){D.forEach(d=>{const m=markers[d.id];if(shown(d)){m.setStyle(mStyle(d));if(!map.hasLayer(m))m.addTo(map);}else if(map.hasLayer(m))map.removeLayer(m);});}
+map.fitBounds(L.latLngBounds(D.map(d=>[d.lat,d.lng]).concat([[HOME.lat,HOME.lng]])).pad(0.08));
 const toneCss={success:['--color-background-success','--color-text-success'],info:['--color-background-info','--color-text-info'],warning:['--color-background-warning','--color-text-warning'],danger:['--color-background-danger','--color-text-danger']};
 function surfDots(n){let s='';for(let i=1;i<=3;i++)s+=`<span style="color:${i<=n?'var(--color-text-primary)':'var(--color-text-tertiary)'}">●</span>`;return s;}
 function statusIcon(t){return t==='success'?'ti-circle-check':t==='warning'?'ti-alert-triangle':t==='danger'?'ti-circle-x':'ti-clock';}
@@ -263,11 +240,10 @@ function render(){
   const list=visible();
   document.getElementById('cards').innerHTML=list.map(cardHtml).join('')||`<div class="lbl">Keine Plätze für diesen Filter.</div>`;
   document.querySelectorAll('.cmp-card').forEach(el=>el.onclick=()=>select(+el.dataset.id,true));
-  pins.attr('opacity',d=>shown(d)?1:0.1).attr('pointer-events',d=>shown(d)?'auto':'none');
-  stylePins();
+  refreshMarkers();
   document.getElementById('detail').innerHTML=sel?detailHtml(D.find(d=>d.id===sel)):`<div class="lbl" style="text-align:center;padding:.6rem;border:.5px dashed var(--color-border-secondary);border-radius:var(--border-radius-md)"><i class="ti ti-hand-finger" aria-hidden="true"></i> Pin oder Karte antippen für Details</div>`;
 }
-function select(id,scroll){sel=(sel===id?null:id);drawLink(sel?D.find(d=>d.id===sel):null);render();if(scroll&&sel)document.getElementById('mapwrap').scrollIntoView({behavior:'smooth',block:'center'});}
+function select(id,scroll){sel=(sel===id?null:id);render();if(sel){const d=D.find(x=>x.id===sel);map.flyTo([d.lat,d.lng],Math.max(map.getZoom(),9),{duration:0.6});const m=markers[sel];if(m){m.bringToFront&&m.bringToFront();m.openTooltip();}if(scroll)document.getElementById('detail').scrollIntoView({behavior:'smooth',block:'start'});}}
 document.querySelectorAll('.chip[data-reg]').forEach(c=>c.onclick=()=>{reg=c.dataset.reg;document.querySelectorAll('.chip[data-reg]').forEach(x=>x.setAttribute('aria-pressed',x===c));render();});
 const at=document.getElementById('availToggle');at.onclick=()=>{onlyAvail=!onlyAvail;at.setAttribute('aria-pressed',onlyAvail);render();};
 const bt=document.getElementById('budgetToggle');bt.onclick=()=>{onlyBudget=!onlyBudget;bt.setAttribute('aria-pressed',onlyBudget);render();};
