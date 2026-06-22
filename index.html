@@ -167,13 +167,21 @@ function surfDots(n){let s='';for(let i=1;i<=3;i++)s+=`<span style="color:${i<=n
 function statusIcon(t){return t==='success'?'ti-circle-check':t==='warning'?'ti-alert-triangle':t==='danger'?'ti-circle-x':'ti-clock';}
 function badge(d){const[bg,fg]=toneCss[d.tone];return `<span class="badge" style="background:var(${bg});color:var(${fg})"><i class="ti ${statusIcon(d.tone)}" aria-hidden="true"></i>${d.status}</span>`;}
 function priceFull(d){return d.price==null?'auf Anfrage':(d.ptext+(d.est?' · Schätzung':' · live')+(d.over?' · über Budget':''));}
+function flagSvg(reg){return reg==='daenemark'
+ ?'<svg width="16" height="12" viewBox="0 0 37 28" style="border:0.5px solid var(--color-border-tertiary);border-radius:2px;vertical-align:-2px;flex-shrink:0" aria-hidden="true"><rect width="37" height="28" fill="#C8102E"/><rect x="12" width="4" height="28" fill="#fff"/><rect y="12" width="37" height="4" fill="#fff"/></svg>'
+ :'<svg width="16" height="11" viewBox="0 0 3 2" style="border:0.5px solid var(--color-border-tertiary);border-radius:2px;vertical-align:-1px;flex-shrink:0" aria-hidden="true"><rect width="1" height="2" fill="#0055A4"/><rect x="1" width="1" height="2" fill="#fff"/><rect x="2" width="1" height="2" fill="#EF4135"/></svg>';}
+function depLabel(d){
+ if(d.reg==='bretagne')return 'Finistère · Dép. 29';
+ if(d.reg==='daenemark')return (d.lat>=56.8?'Nordjylland':d.lat>=55.85?'Midtjylland':'Syddanmark')+' · Region';
+ return d.lat>=44.6?'Gironde · Dép. 33':'Landes · Dép. 40';
+}
 function detailHtml(d){
   return `<div style="background:var(--color-background-primary);border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.15rem;display:flex;gap:14px;align-items:flex-start">
     <div style="flex-shrink:0">${illus(d.reg)}</div>
     <div style="flex:1;min-width:0">
       <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:2px">
         <span style="width:10px;height:10px;border-radius:50%;background:${REG[d.reg].color};flex-shrink:0"></span>
-        <span style="font-size:16px;font-weight:500">${d.n}</span><span class="lbl">· ${d.area}</span>${badge(d)}
+        ${flagSvg(d.reg)}<span style="font-size:16px;font-weight:500">${d.n}</span><span class="lbl">· ${d.area} · ${depLabel(d)}</span>${badge(d)}
       </div>
       <p style="margin:.35rem 0 .6rem;font-size:14px;color:var(--color-text-secondary)">${d.profil}</p>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:10px">
@@ -194,7 +202,7 @@ function cardHtml(d){
       <span style="width:9px;height:9px;border-radius:50%;background:${REG[d.reg].color};flex-shrink:0"></span>
       <span style="font-size:15px;font-weight:500;line-height:1.2">${d.n}</span>
     </div>
-    <div class="lbl" style="margin-bottom:8px">${d.area}</div>
+    <div class="lbl" style="margin-bottom:8px;display:flex;align-items:center;gap:5px;flex-wrap:wrap">${flagSvg(d.reg)}<span>${d.area}</span><span style="opacity:.7">· ${depLabel(d)}</span></div>
     <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span class="lbl"><i class="ti ti-car" aria-hidden="true"></i> Fahrzeit</span><span style="font-weight:500">ca. ${d.hours} h</span></div>
     <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span class="lbl"><i class="ti ti-cash" aria-hidden="true"></i> Preis</span><span style="font-weight:500">${d.ptext}${d.over?' <span class=tag>&gt;€700</span>':''}</span></div>
     <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:8px"><span class="lbl"><i class="ti ti-ripple" aria-hidden="true"></i> Surf</span><span>${surfDots(d.surf)}</span></div>
