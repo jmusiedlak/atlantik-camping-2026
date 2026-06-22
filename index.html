@@ -69,6 +69,10 @@
     </select>
   </div>
 
+  <div style="display:flex;align-items:center;gap:8px;background:var(--color-background-info);color:var(--color-text-info);border-radius:var(--border-radius-md);padding:.55rem .8rem;margin-bottom:.7rem;font-size:13px;line-height:1.45">
+    <i class="ti ti-calendar-event" aria-hidden="true" style="font-size:18px;flex-shrink:0"></i>
+    <span><span style="font-weight:500">Verfügbarkeit/Status gelten für dieses Reisefenster:</span> Anreise <b style="font-weight:500">20.–22.07.2026</b> · Abreise <b style="font-weight:500">29.–31.07.2026</b> · ~9 Nächte · 2 Erw. + Kleinkind (2 J.) · Daten flexibel</span>
+  </div>
   <div id="mapwrap" style="background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:6px"></div>
 
   <div style="display:flex;flex-wrap:wrap;gap:14px;margin:.5rem 2px .35rem;font-size:12px;color:var(--color-text-secondary)">
@@ -189,6 +193,7 @@ function detailHtml(d){
         ${metric('ti-cash','Preis (~9 Nächte)',priceFull(d))}
         ${metric('ti-beach','Zum Surfstrand',d.beach)}
         ${metric('ti-ripple','Surf',surfDots(d.surf))}
+        ${metric('ti-calendar-event','Reisefenster','20.–22.07. → 29.–31.07.')}
       </div>
       <div style="margin-top:.7rem"><a href="${d.url}" target="_blank" rel="noopener">Website / Buchung <span aria-hidden="true">↗</span></a></div>
     </div>
