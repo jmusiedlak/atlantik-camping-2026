@@ -133,6 +133,40 @@ const D=[
  {id:31,n:"Hvide Sande Camping",area:"Hvide Sande (DK)",reg:"daenemark",lat:55.987,lng:8.135,price:470,ptext:"€470",est:true,over:false,km:820,hours:8,surf:2,beach:"300 m",profil:"Familiär zwischen Nordsee und Fjord, 300 m zum Strand; Wind/Lern-Surf.",status:"anfragen",tone:"info",url:"https://hvidesandecamping.dk/"}
 ];
 
+const CHECKED={
+ 1:"20.–29.07. · Pitchup: 8 frei (22.–31.: 4)",
+ 2:"22.–29.07. · ausgebucht (online zu ab 1.7.)",
+ 3:"18.07.–01.08. · Buchung offen",
+ 4:"nicht prüfbar · ext. Portal",
+ 5:"20.–29.07. · nur VIP 120 frei",
+ 6:"20.–29.07. · Pitchup: 3 frei",
+ 7:"20.–29.07. · Pitchup: frei",
+ 8:"20.–29.07. · Pitchup: 3 frei",
+ 9:"20.–29.07. · Pitchup: nur 1 frei!",
+ 10:"20.–29.07. · Pitchup: frei"
+};
+const IMG={
+ 11:"https://medias.azko.fr/org-11395/site-17731/img/lodge_kenya_camping_ocean_carcan-6735df6a0c065.webp",
+ 13:"https://camping-leporge.fr/wp-content/uploads/2023/12/plage-camping-la-grigne.jpg",
+ 16:"https://medias.yellohvillage.fr/7/lous_seurrots_new_82fe09b72f.jpg",
+ 18:"https://www.camping-moisan.com/wp-content/uploads/2025/03/visionneuse-1.jpg",
+ 21:"https://www.campinglacivelle.fr/wp-content/uploads/2023/06/vue-ciel-piscine.jpg",
+ 22:"https://img.sandayagroupe.eu/images/_aliases/original_optimized/8/0/8/6/616808-59-fre-FR/711cc5ae3454-Web_crop-OND_Infrastructures_011.jpg"
+};
+const SITE={
+ 1:"https://www.campingdespins.fr/",2:"https://www.camping-cap.com/",3:"https://www.camping-eurosol.com/",4:"https://www.camping-saint-martin.fr/",5:"https://www.levieuxport.com/",
+ 7:"https://www.camping-le-raguenes-plage.com/",8:"https://www.campingdupoulquer.com/",9:"https://www.vejersfamiliecamping.dk/",10:"https://nissumfjordcamping.dk/",
+ 12:"https://camping-municipal-ocean.com/",14:"https://www.airotel-ocean.com/",15:"https://www.camping-club-marina.com/",17:"https://www.camping-les-cigales.fr/",
+ 19:"https://www.camping-les-sableres.com/",20:"https://www.camping-oceliances.com/",21:"https://www.campinglacivelle.fr/",23:"https://www.lespinsbleus.com/",25:"https://www.campingdelatorche.fr/",
+ 26:"https://www.camping-penmarch.fr/",27:"https://www.camping-crozon-laplagedegoulien.com/",28:"https://www.campinglittoral.net/",
+ 29:"https://soendervigcamping.dk/",30:"https://www.nystrupcampingklitmoller.dk/",31:"https://hvidesandecamping.dk/"
+};
+function imgSrc(d){if(IMG[d.id])return IMG[d.id];if(SITE[d.id])return "https://image.thum.io/get/width/600/crop/450/noanimate/"+SITE[d.id];return null;}
+function imgBox(d,big){const u=imgSrc(d);const dim=big?'width:90px;height:90px':'width:100%;height:104px';
+ return `<div style="${dim};position:relative;border-radius:var(--border-radius-md);overflow:hidden;background:var(--color-background-secondary);flex-shrink:0">`
+  +`<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">${illus(d.reg)}</div>`
+  +(u?`<img src="${u}" alt="${d.n}" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'">`:'')
+  +`</div>`;}
 const isDark=matchMedia('(prefers-color-scheme: dark)').matches;
 const W=900,H=520;
 const proj=d3.geoMercator().fitExtent([[28,18],[W-22,H-18]],{type:"Polygon",coordinates:[[[-5.5,42.6],[9.6,42.6],[9.6,57.6],[-5.5,57.6],[-5.5,42.6]]]});
@@ -181,7 +215,7 @@ function depLabel(d){
 }
 function detailHtml(d){
   return `<div style="background:var(--color-background-primary);border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.15rem;display:flex;gap:14px;align-items:flex-start">
-    <div style="flex-shrink:0">${illus(d.reg)}</div>
+    <div style="flex-shrink:0">${imgBox(d,true)}</div>
     <div style="flex:1;min-width:0">
       <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:2px">
         <span style="width:10px;height:10px;border-radius:50%;background:${REG[d.reg].color};flex-shrink:0"></span>
@@ -193,9 +227,9 @@ function detailHtml(d){
         ${metric('ti-cash','Preis (~9 Nächte)',priceFull(d))}
         ${metric('ti-beach','Zum Surfstrand',d.beach)}
         ${metric('ti-ripple','Surf',surfDots(d.surf))}
-        ${metric('ti-calendar-event','Reisefenster','20.–22.07. → 29.–31.07.')}
+        ${metric('ti-calendar-event','Verfügb. geprüft',CHECKED[d.id]||'noch offen · Reisefenster 20.–31.07.')}
       </div>
-      <div style="margin-top:.7rem"><a href="${d.url}" target="_blank" rel="noopener">Website / Buchung <span aria-hidden="true">↗</span></a></div>
+      <div style="margin-top:.7rem;display:flex;gap:16px;flex-wrap:wrap"><a href="${d.url}" target="_blank" rel="noopener">Website / Buchung <span aria-hidden="true">↗</span></a><a href="https://www.google.com/search?tbm=isch&q=${encodeURIComponent('Camping '+d.n+' '+d.area)}" target="_blank" rel="noopener">Fotos ansehen <span aria-hidden="true">↗</span></a></div>
     </div>
   </div>`;
 }
@@ -203,6 +237,7 @@ function metric(ic,l,v){return `<div style="background:var(--color-background-se
 function illus(r){const c=REG[r].color;return `<svg width="74" height="74" viewBox="0 0 74 74" aria-hidden="true"><rect width="74" height="74" rx="10" fill="${c}" opacity="0.12"/><path d="M20 50 l8-20 8 20z" fill="${c}" opacity="0.85"/><path d="M14 50 l6-15 6 15z" fill="${c}" opacity="0.55"/><circle cx="54" cy="22" r="7" fill="${c}" opacity="0.6"/><path d="M8 56 q10 -7 18 0 t18 0 t18 0" stroke="${c}" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg>`;}
 function cardHtml(d){
   return `<div class="cmp-card ${sel===d.id?'sel':''} ${d.tone==='danger'?'out':''}" data-id="${d.id}">
+    <div style="margin-bottom:8px">${imgBox(d,false)}</div>
     <div style="display:flex;align-items:center;gap:7px;margin-bottom:3px">
       <span style="width:9px;height:9px;border-radius:50%;background:${REG[d.reg].color};flex-shrink:0"></span>
       <span style="font-size:15px;font-weight:500;line-height:1.2">${d.n}</span>
