@@ -61,6 +61,10 @@
   .hint{font-size:12.5px;color:var(--color-text-tertiary);margin:0 0 1rem}
   .rule{height:3px;width:54px;background:var(--accent);border-radius:2px;margin:.35rem 0 1.2rem}
   .hero{display:block;height:auto;margin:.4rem 0 1.2rem}
+  .paola{position:relative;width:clamp(165px,46vw,215px);aspect-ratio:640/460;margin:.4rem 0 1.1rem}
+  .pl{position:absolute;inset:0;-webkit-mask:url(paola.png) center/contain no-repeat;mask:url(paola.png) center/contain no-repeat}
+  .pl-wave{background:var(--pine)}
+  .pl-board{background:var(--accent);-webkit-clip-path:polygon(35% 73%,93% 60%,95% 69%,37% 82%);clip-path:polygon(35% 73%,93% 60%,95% 69%,37% 82%)}
   .mapexp{width:34px;height:34px;border-radius:8px!important;border:.5px solid var(--color-border-secondary)!important;background:var(--color-background-primary);color:var(--color-text-primary);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:17px;box-shadow:var(--shadow)}
   .mapexp:hover{background:var(--color-background-secondary)}
   body.mapfull{overflow:hidden}
@@ -99,14 +103,7 @@
   </div>
   <p class="lede">Ab Sa 18.07. von Köln, ~9 Nächte am Platz, zurück bis 02.08. · 2 Erwachsene + Kleinkind (2 J.) · ausgebauter Pkw + Dachzelt/Zusatzzelt · gesucht: schattig, fester Boden, fußläufig zum Surfstrand · Budget ~€700 / 9 Nächte.</p>
   <p class="hint">Pin oder Karte antippen für Details · oben filtern &amp; sortieren · <i class="ti ti-star" aria-hidden="true"></i> markiert gemeinsame Favoriten (Live-Sync zwischen euch).</p>
-  <svg class="hero" viewBox="0 0 360 210" width="160" role="img" aria-label="Surfing Elephant – Logo">
-    <path d="M58,176 C120,188 214,180 268,150" fill="none" stroke="var(--accent)" stroke-width="11" stroke-linecap="round"/>
-    <path d="M104,122 C90,138 92,160 112,166 C133,172 150,156 162,136 C176,113 200,103 228,116 C256,129 256,168 224,176 C252,170 250,140 222,140 C201,140 193,166 216,176" fill="none" stroke="var(--color-text-primary)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M104,121 C99,104 108,86 130,82 C152,78 168,92 167,114" fill="none" stroke="var(--color-text-primary)" stroke-width="5.5" stroke-linecap="round"/>
-    <path d="M156,92 C180,86 192,114 174,134 C162,147 147,140 146,121 C145,108 149,99 156,92 Z" fill="var(--color-text-primary)"/>
-    <circle cx="120" cy="108" r="3.6" fill="var(--color-background-primary)"/>
-    <circle cx="228" cy="104" r="3" fill="var(--pine)"/><circle cx="246" cy="120" r="2.4" fill="var(--pine)"/><circle cx="212" cy="96" r="2.2" fill="var(--pine)"/>
-  </svg>
+  <div class="paola" role="img" aria-label="Surfing Elephant – Paola surft"><span class="pl pl-wave"></span><span class="pl pl-board"></span></div>
   <div id="whoBar" style="display:none;align-items:center;gap:10px;flex-wrap:wrap;background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:.5rem .8rem;margin-bottom:.7rem;font-size:13px;color:var(--color-text-secondary)"></div>
 
   <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:.5rem">
