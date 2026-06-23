@@ -56,7 +56,8 @@
 <div class="wrap">
   <h1>Campingplätze Atlantik · Bretagne · Dänemark — Sommer 2026</h1>
   <p class="intro">Reise: ab Sa 18.07. von Köln, ~9 Nächte am Platz, zurück bis 02.08. · 2 Erwachsene + Kleinkind (2 J.) · Campervan (~4,40 m) + Dachzelt/Zusatzzelt · gesucht: schattig, fester Boden, fußläufig zum Surfstrand · Budget ~€700 / 9 Nächte.</p>
-  <p class="hint">Pin oder Karte antippen für Details. Oben nach Region/Verfügbarkeit filtern und sortieren.</p>
+  <p class="hint">Pin oder Karte antippen für Details. Oben nach Region/Verfügbarkeit filtern und sortieren. ⭐ markiert gemeinsame Favoriten (Live-Sync).</p>
+  <div id="whoBar" style="display:none;align-items:center;gap:10px;flex-wrap:wrap;background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:.5rem .8rem;margin-bottom:.7rem;font-size:13px;color:var(--color-text-secondary)"></div>
 
   <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:.5rem">
     <button class="chip" data-reg="all" aria-pressed="true">Alle Regionen</button>
@@ -65,6 +66,7 @@
     <button class="chip" data-reg="daenemark" aria-pressed="false">Dänemark</button>
     <button class="chip" id="availToggle" aria-pressed="false"><i class="ti ti-circle-check" aria-hidden="true"></i> Nur verfügbare</button>
     <button class="chip" id="budgetToggle" aria-pressed="false"><i class="ti ti-cash" aria-hidden="true"></i> Bis €700</button>
+    <button class="chip" id="favToggle" aria-pressed="false"><i class="ti ti-star" aria-hidden="true"></i> Nur Favoriten</button>
     <span style="flex:1"></span>
     <label class="lbl" for="sortby">Sortieren</label>
     <select id="sortby">
@@ -102,6 +104,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
 <script>
 const REG={atlantik:{name:"Atlantik (Landes/Médoc)",color:"#D85A30"},bretagne:{name:"Bretagne",color:"#1D9E75"},daenemark:{name:"Dänemark",color:"#378ADD"}};
 const HOME={lat:50.94,lng:6.96,color:"#BA7517"};
@@ -217,11 +221,21 @@ L.circleMarker([HOME.lat,HOME.lng],{radius:8,fillColor:HOME.color,color:'#fff',w
 const cluster=L.markerClusterGroup({showCoverageOnHover:false,spiderfyOnMaxZoom:true,disableClusteringAtZoom:11,maxClusterRadius:38,spiderfyDistanceMultiplier:1.4}).addTo(map);
 const markers={};
 function dotIcon(d){const c=d.tone==='danger'?'#A32D2D':REG[d.reg].color;const ring=d.tone==='warning'?'#BA7517':(d.tone==='danger'?'#A32D2D':'#fff');const s=sel===d.id?22:16;return L.divIcon({className:'',iconSize:[s,s],iconAnchor:[s/2,s/2],html:`<div style="width:${s}px;height:${s}px;border-radius:50%;background:${c};border:2px solid ${ring};box-shadow:0 0 0 1.5px rgba(0,0,0,.3);${d.tone==='info'?'opacity:.72;':''}"></div>`});}
-function popupHtml(d){const u=imgUrls(d)[0];const img=u?`<img src="${u}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'">`:'';return `<div style="width:208px"><div style="position:relative;height:104px;border-radius:6px;overflow:hidden;background:var(--color-background-secondary);margin-bottom:7px"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">${illus(d.reg)}</div>${img}</div><div style="font-size:14px;font-weight:500;display:flex;align-items:center;gap:5px">${flagSvg(d.reg)} ${d.n}</div><div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:5px">${d.area} · ${depLabel(d)}</div><div style="margin-bottom:5px">${badge(d)}</div><div style="font-size:12px;color:var(--color-text-secondary)"><i class="ti ti-cash" aria-hidden="true"></i> ${d.ptext||'auf Anfrage'} · <i class="ti ti-car" aria-hidden="true"></i> ca. ${d.hours} h</div><button onclick="select(${d.id},true)" style="margin-top:7px;width:100%;font-size:13px;padding:5px 0;border-radius:6px;border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);cursor:pointer">Details ansehen</button></div>`;}
+function popupHtml(d){const u=imgUrls(d)[0];const img=u?`<img src="${u}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'">`:'';return `<div style="width:208px"><div style="position:relative;height:104px;border-radius:6px;overflow:hidden;background:var(--color-background-secondary);margin-bottom:7px"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">${illus(d.reg)}</div>${img}</div><div style="font-size:14px;font-weight:500;display:flex;align-items:center;gap:5px">${flagSvg(d.reg)} <span style="flex:1">${d.n}</span>${favStar(d.id)}</div><div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:5px">${d.area} · ${depLabel(d)}</div><div style="margin-bottom:5px">${badge(d)}</div><div style="font-size:12px;color:var(--color-text-secondary)"><i class="ti ti-cash" aria-hidden="true"></i> ${d.ptext||'auf Anfrage'} · <i class="ti ti-car" aria-hidden="true"></i> ca. ${d.hours} h</div><button onclick="select(${d.id},true)" style="margin-top:7px;width:100%;font-size:13px;padding:5px 0;border-radius:6px;border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);cursor:pointer">Details ansehen</button></div>`;}
 D.forEach(d=>{const m=L.marker([d.lat,d.lng],{icon:dotIcon(d)}).bindPopup(()=>popupHtml(d),{minWidth:208});markers[d.id]=m;});
 function refreshMarkers(){cluster.clearLayers();D.forEach(d=>{if(shown(d)){markers[d.id].setIcon(dotIcon(d));cluster.addLayer(markers[d.id]);}});}
 map.fitBounds(L.latLngBounds(D.map(d=>[d.lat,d.lng]).concat([[HOME.lat,HOME.lng]])).pad(0.08));
 const toneCss={success:['--color-background-success','--color-text-success'],info:['--color-background-info','--color-text-info'],warning:['--color-background-warning','--color-text-warning'],danger:['--color-background-danger','--color-text-danger']};
+let FAVS={},onlyFav=false;
+let WHO=localStorage.getItem('fav_who')||null;
+const FAVCLR={jan:'#185FA5',mieke:'#993556'};
+let fdb=null;
+try{firebase.initializeApp({apiKey:"AIzaSyCJQndOZsfZS3HOIZQt3jHAYtcEKbFTAso",authDomain:"camping-favs.firebaseapp.com",databaseURL:"https://camping-favs-default-rtdb.europe-west1.firebasedatabase.app",projectId:"camping-favs",storageBucket:"camping-favs.firebasestorage.app",messagingSenderId:"808677394803",appId:"1:808677394803:web:0737dc19789cf0c0f59d06"});fdb=firebase.database();fdb.ref('favs').on('value',s=>{FAVS=s.val()||{};render();});}catch(e){console.warn('Firebase init failed',e);}
+function favWho(id){const f=FAVS[id]||{};return ['jan','mieke'].filter(k=>f[k]);}
+function favStar(id){const who=favWho(id);const mine=!!(WHO&&FAVS[id]&&FAVS[id][WHO]);const both=who.length===2;const chips=who.map(k=>`<span style="font-size:9px;font-weight:600;color:#fff;background:${FAVCLR[k]};border-radius:7px;padding:1px 5px">${k==='jan'?'J':'M'}</span>`).join('');return `<span style="display:inline-flex;align-items:center;gap:4px;flex-shrink:0" onclick="event.stopPropagation()">`+(both?`<span style="font-size:9px;font-weight:600;color:#854F0B;background:#FAEEDA;border-radius:7px;padding:1px 6px">beide</span>`:'')+chips+`<button onclick="toggleFav(${id},event)" aria-label="Favorit umschalten" style="border:none;background:none;cursor:pointer;font-size:18px;line-height:1;color:${mine?'#E6A700':'var(--color-text-tertiary)'};padding:0">${mine?'★':'☆'}</button></span>`;}
+function toggleFav(id,e){if(e)e.stopPropagation();if(!fdb)return;if(!WHO){renderWho(true);document.getElementById('whoBar').scrollIntoView({block:'center'});return;}const cur=FAVS[id]&&FAVS[id][WHO];fdb.ref('favs/'+id+'/'+WHO).set(cur?null:true);}
+function setWho(w){WHO=w;localStorage.setItem('fav_who',w);renderWho();render();}
+function renderWho(pick){const bar=document.getElementById('whoBar');if(!bar)return;const bs="font-size:13px;font-weight:500;border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);border-radius:6px;padding:3px 12px;cursor:pointer;color:var(--color-text-primary)";if(WHO&&!pick){bar.innerHTML=`<i class="ti ti-star" aria-hidden="true"></i><span>Du markierst Favoriten als <b style="font-weight:500">${WHO==='jan'?'Jan':'Mieke'}</b></span><button onclick="renderWho(true)" style="margin-left:auto;font-size:12px;border:0.5px solid var(--color-border-secondary);background:transparent;border-radius:6px;padding:2px 8px;cursor:pointer;color:inherit">wechseln</button>`;}else{bar.innerHTML=`<i class="ti ti-star" aria-hidden="true"></i><span>Wer bist du? (für die Favoriten-Zuordnung)</span><button onclick="setWho('jan')" style="${bs}">Jan</button><button onclick="setWho('mieke')" style="${bs}">Mieke</button>`;}bar.style.display='flex';}
 function surfDots(n){let s='';for(let i=1;i<=3;i++)s+=`<span style="color:${i<=n?'var(--color-text-primary)':'var(--color-text-tertiary)'}">●</span>`;return s;}
 function statusIcon(t){return t==='success'?'ti-circle-check':t==='warning'?'ti-alert-triangle':t==='danger'?'ti-circle-x':'ti-clock';}
 const SENT=new Set([3,4,13,14,16,17,22,25,28]);
@@ -247,7 +261,7 @@ function detailHtml(d){
     <div style="min-width:0">
       <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:2px">
         <span style="width:10px;height:10px;border-radius:50%;background:${REG[d.reg].color};flex-shrink:0"></span>
-        ${flagSvg(d.reg)}<span style="font-size:16px;font-weight:500">${d.n}</span><span class="lbl">· ${d.area} · ${depLabel(d)}</span>${badge(d)}
+        ${flagSvg(d.reg)}<span style="font-size:16px;font-weight:500">${d.n}</span><span class="lbl">· ${d.area} · ${depLabel(d)}</span>${badge(d)}<span style="margin-left:auto">${favStar(d.id)}</span>
       </div>
       <p style="margin:.35rem 0 .6rem;font-size:14px;color:var(--color-text-secondary)">${d.profil}</p>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:10px">
@@ -269,7 +283,8 @@ function cardHtml(d){
     <div style="margin:-.85rem -1rem .7rem">${imgBox(d,'card')}</div>
     <div style="display:flex;align-items:center;gap:7px;margin-bottom:3px">
       <span style="width:9px;height:9px;border-radius:50%;background:${REG[d.reg].color};flex-shrink:0"></span>
-      <span style="font-size:15px;font-weight:500;line-height:1.2">${d.n}</span>
+      <span style="font-size:15px;font-weight:500;line-height:1.2;flex:1">${d.n}</span>
+      ${favStar(d.id)}
     </div>
     <div class="lbl" style="margin-bottom:8px;display:flex;align-items:center;gap:5px;flex-wrap:wrap">${flagSvg(d.reg)}<span>${d.area}</span><span style="opacity:.7">· ${depLabel(d)}</span></div>
     <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span class="lbl"><i class="ti ti-car" aria-hidden="true"></i> Fahrzeit</span><span style="font-weight:500">ca. ${d.hours} h</span></div>
@@ -278,7 +293,7 @@ function cardHtml(d){
     ${badge(d)}
   </div>`;
 }
-function shown(d){return (reg==='all'||d.reg===reg)&&(!onlyAvail||avail(d))&&(!onlyBudget||!d.over);}
+function shown(d){return (reg==='all'||d.reg===reg)&&(!onlyAvail||avail(d))&&(!onlyBudget||!d.over)&&(!onlyFav||favWho(d.id).length>0);}
 const rank={success:0,warning:1,info:2,danger:3};
 function visible(){return D.filter(shown).sort((a,b)=>sort==='surf'?b.surf-a.surf:sort==='price'?(a.price??1e9)-(b.price??1e9):sort==='status'?(rank[a.tone]-rank[b.tone])||a.hours-b.hours:a.hours-b.hours);}
 function render(){
@@ -292,7 +307,9 @@ function select(id,scroll){sel=(sel===id?null:id);render();if(sel){const m=marke
 document.querySelectorAll('.chip[data-reg]').forEach(c=>c.onclick=()=>{reg=c.dataset.reg;document.querySelectorAll('.chip[data-reg]').forEach(x=>x.setAttribute('aria-pressed',x===c));render();});
 const at=document.getElementById('availToggle');at.onclick=()=>{onlyAvail=!onlyAvail;at.setAttribute('aria-pressed',onlyAvail);render();};
 const bt=document.getElementById('budgetToggle');bt.onclick=()=>{onlyBudget=!onlyBudget;bt.setAttribute('aria-pressed',onlyBudget);render();};
+const ft=document.getElementById('favToggle');ft.onclick=()=>{onlyFav=!onlyFav;ft.setAttribute('aria-pressed',onlyFav);render();};
 document.getElementById('sortby').onchange=e=>{sort=e.target.value;render();};
+renderWho();
 render();
 </script>
 </body>
