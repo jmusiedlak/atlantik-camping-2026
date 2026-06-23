@@ -117,7 +117,7 @@ const D=[
  {id:12,n:"Municipal de l'Océan",area:"Vendays-Montalivet",reg:"atlantik",lat:45.38,lng:-1.148,price:238,ptext:"€238 + €70 Kaution",est:false,over:false,km:1150,hours:11,surf:3,beach:"400 m, ~10 Min",profil:"Municipal, 400 m zum Surfstrand. Verfügbar 22.–29.07. — ABER nur ein Sandplatz (Auto-Risiko!); Zusatzzelt erlaubt.",status:"nur Sandplatz",tone:"warning",url:"https://camping-municipal-ocean.com/"},
  {id:13,n:"Municipal La Grigne",area:"Le Porge-Océan",reg:"atlantik",lat:44.87,lng:-1.224,price:458,ptext:"ca. €458",est:false,over:false,km:1220,hours:12,surf:2,beach:"600 m, Dünenpfad",profil:"Großer Municipal im Pinienwald, sanftere Wellen (gut mit Kleinkind), 600 m fußläufig.",status:"anfragen",tone:"info",url:"https://camping-leporge.fr/"},
  {id:14,n:"Airotel L'Océan",area:"Lacanau-Océan",reg:"atlantik",lat:45.00,lng:-1.196,price:675,ptext:"ca. €550–700",est:true,over:false,km:1200,hours:12,surf:3,beach:"~700–800 m",profil:"Surfstadt Lacanau, Pinienwald; Strand grenzwertig fußläufig, Budget knapp.",status:"anfragen",tone:"info",url:"https://www.airotel-ocean.com/"},
- {id:15,n:"Marina-Landes",area:"Mimizan-Plage",reg:"atlantik",lat:44.203,lng:-1.291,price:560,ptext:"ca. €500–620",est:true,over:false,km:1250,hours:12,surf:3,beach:"500–600 m",profil:"Pinienwald, 500–600 m zum Beachbreak Mimizan.",status:"anfragen",tone:"info",url:"https://www.marina-landes.com/"},
+ {id:15,n:"Marina-Landes",area:"Mimizan-Plage",reg:"atlantik",lat:44.203,lng:-1.291,price:560,ptext:"ca. €500–620",est:true,over:false,km:1250,hours:12,surf:3,beach:"500–600 m",profil:"Pinienwald, 500–600 m zum Beachbreak Mimizan — leider ausgebucht im gewünschten Zeitraum.",status:"ausgebucht",tone:"danger",url:"https://www.marina-landes.com/"},
  {id:16,n:"Yelloh Lous Seurrots",area:"Contis-Plage",reg:"atlantik",lat:44.089,lng:-1.316,price:470,ptext:"ca. €400–540",est:true,over:false,km:1240,hours:12,surf:3,beach:"400–500 m",profil:"Pinienwald, 400–500 m zum Surfstrand; Boden teils sandig → festen Platz erbitten.",status:"anfragen",tone:"info",url:"https://www.google.com/search?q=Camping+Lous+Seurrots+Contis"},
  {id:17,n:"Les Cigales",area:"Moliets-Plage",reg:"atlantik",lat:43.851,lng:-1.387,price:340,ptext:"ca. €340",est:true,over:false,km:1230,hours:12,surf:3,beach:"300 m, 5 Min.",profil:"★ Günstiger Moliets-Platz: Pinienwald, 5 Min. zum Top-Surfstrand.",status:"anfragen",tone:"info",url:"https://www.camping-les-cigales.fr/"},
  {id:18,n:"Camping de Moïsan",area:"Messanges",reg:"atlantik",lat:43.817,lng:-1.392,price:310,ptext:"ca. €280–340",est:true,over:false,km:1245,hours:12,surf:3,beach:"800 m, Fuß/Rad",profil:"★ Budget: dichter Pinienwald, 800 m zum Surfstrand Messanges.",status:"anfragen",tone:"info",url:"https://www.google.com/search?q=Camping+de+Moisan+Messanges"},
@@ -151,7 +151,7 @@ const CHECKED={
  12:"Antwort: 22.–29.07. frei, aber nur SANDPLATZ (Auto-Risiko!) · Zusatzzelt OK · €238 + €70 Kaution",
  13:"Tarif HS ~€47/N (Van+Strom+Zusatzzelt); webcamp.fr (Mo–Fr bis 12h)",
  14:"5★ · extern (inaxel) · wahrsch. über Budget — direkt anfragen",
- 15:"Emplacements bestätigt; webcamp.fr — Preis/Frei unklar",
+ 15:"Antwort: ausgebucht im gewünschten Zeitraum",
  16:"5★ · Domain nicht prüfbar — direkt anfragen (500 m Strand)",
  17:"webcamp.fr · Preis nur Broschüre — Strand ~200 m",
  18:"Domain nicht prüfbar — direkt anfragen (800 m)",
@@ -216,7 +216,7 @@ map.fitBounds(L.latLngBounds(D.map(d=>[d.lat,d.lng]).concat([[HOME.lat,HOME.lng]
 const toneCss={success:['--color-background-success','--color-text-success'],info:['--color-background-info','--color-text-info'],warning:['--color-background-warning','--color-text-warning'],danger:['--color-background-danger','--color-text-danger']};
 function surfDots(n){let s='';for(let i=1;i<=3;i++)s+=`<span style="color:${i<=n?'var(--color-text-primary)':'var(--color-text-tertiary)'}">●</span>`;return s;}
 function statusIcon(t){return t==='success'?'ti-circle-check':t==='warning'?'ti-alert-triangle':t==='danger'?'ti-circle-x':'ti-clock';}
-const SENT=new Set([3,4,13,14,15,16,17,18,22,25,26,28]);
+const SENT=new Set([3,4,13,14,16,17,18,22,25,26,28]);
 function badge(d){if(SENT.has(d.id))return `<span class="badge" style="background:var(--color-background-info);color:var(--color-text-info)"><i class="ti ti-mail" aria-hidden="true"></i>Anfrage gesendet · 22.06.</span>`;const[bg,fg]=toneCss[d.tone];return `<span class="badge" style="background:var(${bg});color:var(${fg})"><i class="ti ${statusIcon(d.tone)}" aria-hidden="true"></i>${d.status}</span>`;}
 function priceFull(d){return d.price==null?'auf Anfrage':(d.ptext+(d.est?' · Schätzung':' · live')+(d.over?' · über Budget':''));}
 function flagSvg(reg){return reg==='daenemark'
