@@ -60,6 +60,11 @@
   .lede{font-size:14.5px;color:var(--color-text-secondary);margin:.8rem 0 .45rem;max-width:66ch}
   .hint{font-size:12.5px;color:var(--color-text-tertiary);margin:0 0 1rem}
   .rule{height:3px;width:54px;background:var(--accent);border-radius:2px;margin:.35rem 0 1.2rem}
+  .hero{display:block;width:100%;height:auto;margin:.3rem 0 1.1rem}
+  .mapexp{width:34px;height:34px;border-radius:8px!important;border:.5px solid var(--color-border-secondary)!important;background:var(--color-background-primary);color:var(--color-text-primary);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:17px;box-shadow:var(--shadow)}
+  .mapexp:hover{background:var(--color-background-secondary)}
+  body.mapfull{overflow:hidden}
+  body.mapfull #mapwrap{position:fixed;inset:0;width:100vw;height:100dvh;border-radius:0;z-index:1100;border:none}
   .chip{font-size:13px;padding:6px 13px;border-radius:999px;border:.5px solid var(--color-border-secondary);background:transparent;cursor:pointer;color:var(--color-text-secondary);font-family:inherit;transition:all .15s ease;display:inline-flex;align-items:center;gap:5px}
   .chip:hover{border-color:var(--color-border-primary);color:var(--color-text-primary)}
   .chip[aria-pressed="true"]{background:var(--color-text-primary);color:var(--color-background-primary);border-color:var(--color-text-primary)}
@@ -94,7 +99,28 @@
   </div>
   <p class="lede">Ab Sa 18.07. von Köln, ~9 Nächte am Platz, zurück bis 02.08. · 2 Erwachsene + Kleinkind (2 J.) · ausgebauter Pkw + Dachzelt/Zusatzzelt · gesucht: schattig, fester Boden, fußläufig zum Surfstrand · Budget ~€700 / 9 Nächte.</p>
   <p class="hint">Pin oder Karte antippen für Details · oben filtern &amp; sortieren · <i class="ti ti-star" aria-hidden="true"></i> markiert gemeinsame Favoriten (Live-Sync zwischen euch).</p>
-  <div class="rule"></div>
+  <svg class="hero" viewBox="0 0 760 124" width="100%" preserveAspectRatio="xMidYMax meet" role="img" aria-label="Paola, der surfende Elefant, auf einer Welle">
+    <path d="M0,100 C110,100 150,74 250,72 C340,70 392,40 452,33 C505,27 548,52 590,64 C648,80 700,74 760,62 L760,124 L0,124 Z" fill="var(--pine)"/>
+    <path d="M452,33 C505,27 548,52 590,64 C560,40 520,30 470,40 C458,42 452,40 452,33 Z" fill="var(--color-background-primary)" opacity="0.18"/>
+    <path d="M0,100 C110,100 150,74 250,72 C340,70 392,40 452,33 C505,27 548,52 590,64 C648,80 700,74 760,62" fill="none" stroke="var(--color-background-primary)" stroke-width="3.5" stroke-linecap="round" opacity="0.9"/>
+    <circle cx="452" cy="30" r="3.2" fill="var(--color-background-primary)" opacity="0.9"/>
+    <circle cx="600" cy="60" r="2.6" fill="var(--color-background-primary)" opacity="0.8"/>
+    <circle cx="250" cy="69" r="2.4" fill="var(--color-background-primary)" opacity="0.75"/>
+    <g transform="translate(286,18) rotate(-7)">
+      <ellipse cx="36" cy="52" rx="46" ry="7" fill="var(--accent)"/>
+      <ellipse cx="36" cy="52" rx="46" ry="7" fill="none" stroke="var(--color-background-primary)" stroke-width="1.2" opacity="0.5"/>
+      <path d="M24,40 L24,49" stroke="var(--color-text-primary)" stroke-width="7" stroke-linecap="round"/>
+      <path d="M50,40 L50,49" stroke="var(--color-text-primary)" stroke-width="7" stroke-linecap="round"/>
+      <ellipse cx="40" cy="27" rx="22" ry="14" fill="var(--color-text-primary)"/>
+      <path d="M61,24 q8,2 5,11" stroke="var(--color-text-primary)" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="25" r="13" fill="var(--color-text-primary)"/>
+      <ellipse cx="22" cy="20" rx="8" ry="9.5" fill="var(--color-text-primary)"/>
+      <ellipse cx="23" cy="20" rx="4" ry="5.5" fill="var(--color-background-primary)" opacity="0.18"/>
+      <path d="M7,27 q-11,-1 -12,-13 q-1,-7 6,-6.5 q5,.5 3.5,6" fill="none" stroke="var(--color-text-primary)" stroke-width="6.4" stroke-linecap="round"/>
+      <path d="M9,33 q-4,3 -8,2" stroke="var(--color-background-primary)" stroke-width="2.4" fill="none" stroke-linecap="round" opacity="0.9"/>
+      <circle cx="13" cy="23" r="2" fill="var(--color-background-primary)"/>
+    </g>
+  </svg>
   <div id="whoBar" style="display:none;align-items:center;gap:10px;flex-wrap:wrap;background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:.5rem .8rem;margin-bottom:.7rem;font-size:13px;color:var(--color-text-secondary)"></div>
 
   <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:.5rem">
@@ -251,6 +277,10 @@ function imgBox(d,mode){const urls=imgUrls(d);const h=mode==='detail'?'190px':'1
 function slide(cid,dir,e){if(e)e.stopPropagation();const box=document.getElementById(cid);if(!box)return;const imgs=[...box.querySelectorAll('img')];if(imgs.length<2)return;let cur=imgs.findIndex(im=>im.style.display!=='none');if(cur<0)cur=0;imgs[cur].style.display='none';const nx=(cur+dir+imgs.length)%imgs.length;imgs[nx].style.display='';const c=document.getElementById(cid+'-c');if(c)c.textContent=(nx+1)+'/'+imgs.length;}
 const map=L.map('mapwrap',{scrollWheelZoom:true});
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'© OpenStreetMap'}).addTo(map);
+function toggleMapFull(){const on=document.body.classList.toggle('mapfull');const b=document.querySelector('.mapexp');if(b)b.innerHTML=on?'<i class="ti ti-arrows-minimize" aria-hidden="true"></i>':'<i class="ti ti-arrows-maximize" aria-hidden="true"></i>';setTimeout(()=>map.invalidateSize(),80);}
+const ExpandCtl=L.Control.extend({options:{position:'topright'},onAdd:function(){const b=L.DomUtil.create('button','mapexp');b.type='button';b.title='Karte vergrößern / verkleinern';b.setAttribute('aria-label','Karte vergrößern');b.innerHTML='<i class="ti ti-arrows-maximize" aria-hidden="true"></i>';L.DomEvent.disableClickPropagation(b);L.DomEvent.on(b,'click',toggleMapFull);return b;}});
+map.addControl(new ExpandCtl());
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.body.classList.contains('mapfull'))toggleMapFull();});
 let sel=null,reg='all',sort='status',onlyAvail=false,onlyBudget=false;
 function avail(d){return d.tone==='success'||d.tone==='warning';}
 const COORDS={1:[45.4836,-1.1277],2:[44.0387,-1.3347],3:[43.9498,-1.3511],4:[43.8549,-1.3867],5:[43.8002,-1.4014],6:[47.9811,-4.4303],7:[47.7930,-3.8005],8:[47.8673,-4.0986],9:[55.6190,8.1353],10:[56.4900,8.2100],11:[45.0841,-1.1839],12:[45.3864,-1.1532],13:[44.8943,-1.2011],14:[45.0079,-1.1898],15:[44.2025,-1.2905],16:[44.0887,-1.3157],17:[43.8518,-1.3873],18:[43.8158,-1.3901],19:[43.7941,-1.4065],20:[43.6883,-1.4147],21:[43.6303,-1.4343],22:[43.5741,-1.4839],23:[43.6039,-1.4558],24:[43.9520,-1.3581],25:[47.8328,-4.3278],26:[47.8008,-4.3319],27:[48.2386,-4.5437],28:[47.9406,-4.3951],29:[56.1113,8.1182],30:[57.0342,8.4798],31:[55.9868,8.1337]};
