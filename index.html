@@ -7,6 +7,8 @@
 <meta name="description" content="Interaktive Übersicht möglicher Campingplätze für unsere Atlantik-Reise im Juli 2026 — mit Fahrzeit ab Köln, Preis, Surf-Eignung und Verfügbarkeit.">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
 <style>
   :root{
     --color-background-primary:#ffffff;--color-background-secondary:#f4f3ed;--color-background-tertiary:#eceae2;
@@ -99,6 +101,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 <script>
 const REG={atlantik:{name:"Atlantik (Landes/Médoc)",color:"#D85A30"},bretagne:{name:"Bretagne",color:"#1D9E75"},daenemark:{name:"Dänemark",color:"#378ADD"}};
 const HOME={lat:50.94,lng:6.96,color:"#BA7517"};
@@ -133,7 +136,8 @@ const D=[
  {id:28,n:"Camping du Littoral",area:"Penhors",reg:"bretagne",lat:47.926,lng:-4.388,price:325,ptext:"ca. €250–400",est:true,over:false,km:1110,hours:11,surf:2,beach:"pieds dans l'eau",profil:"Direkt am surfbaren Penhors-Strand (Baie d'Audierne), familienfreundlich.",status:"anfragen",tone:"info",url:"https://www.google.com/search?q=Camping+du+Littoral+Penhors+Pouldreuzic"},
  {id:29,n:"Søndervig Camping",area:"Søndervig (DK)",reg:"daenemark",lat:56.112,lng:8.117,price:447,ptext:"€447",est:false,over:false,km:830,hours:8,surf:3,beach:"600 m",profil:"★ DK-Bestwert: Dünen, 600 m zum Nordsee-Surfstrand, Zelte willkommen, im Budget. Offenes Gelände (wenig Schatten).",status:"frei · 38 Plätze",tone:"success",url:"https://sondervig.campsys.dk/"},
  {id:30,n:"Nystrup Klitmøller",area:"Klitmøller (DK)",reg:"daenemark",lat:57.034,lng:8.481,price:560,ptext:"ca. €560 (4180 DKK)",est:false,over:false,km:900,hours:9,surf:3,beach:"500 m",profil:"Cold Hawaii — DK-Surfmekka, 230V inkl., 500 m zum Strand. 3 Plätze frei (wenig Schatten), online buchbar.",status:"frei · 3 Plätze",tone:"success",url:"https://www.nystrupcampingklitmoller.dk/"},
- {id:31,n:"Hvide Sande Camping",area:"Hvide Sande (DK)",reg:"daenemark",lat:55.987,lng:8.135,price:434,ptext:"ca. €434",est:false,over:false,km:820,hours:8,surf:2,beach:"~200–400 m",profil:"Familiär zwischen Nordsee und Fjord, ~300 m zum Strand; Wind/Lern-Surf. 3 Plätze frei (Bereich Kullervej).",status:"frei · 3 Plätze",tone:"success",url:"https://hvidesandecamping.dk/"}
+ {id:31,n:"Hvide Sande Camping",area:"Hvide Sande (DK)",reg:"daenemark",lat:55.987,lng:8.135,price:434,ptext:"ca. €434",est:false,over:false,km:820,hours:8,surf:2,beach:"~200–400 m",profil:"Familiär zwischen Nordsee und Fjord, ~300 m zum Strand; Wind/Lern-Surf. 3 Plätze frei (Bereich Kullervej).",status:"frei · 3 Plätze",tone:"success",url:"https://hvidesandecamping.dk/"},
+ {id:32,n:"Camping Les Pins",area:"Crozon (Morgat)",reg:"bretagne",lat:48.2366,lng:-4.5174,price:325,ptext:"ca. €250–400",est:true,over:false,km:1150,hours:12,surf:2,beach:"Morgat 2 km / Goulien 3 km",profil:"Tipp von Goulien: 3★, 121 Stellplätze (Zelt/Auto), bewaldet; Morgat-Strand ~2 km, Surf La Palue nahe.",status:"Tipp · anfragen",tone:"info",url:"https://www.camping-crozon-lespins.com/"}
 ];
 
 const CHECKED={
@@ -207,11 +211,15 @@ const map=L.map('mapwrap',{scrollWheelZoom:true});
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'© OpenStreetMap'}).addTo(map);
 let sel=null,reg='all',sort='status',onlyAvail=false,onlyBudget=false;
 function avail(d){return d.tone==='success'||d.tone==='warning';}
+const COORDS={1:[45.4836,-1.1277],2:[44.0387,-1.3347],3:[43.9498,-1.3511],4:[43.8549,-1.3867],5:[43.8002,-1.4014],6:[47.9811,-4.4303],7:[47.7930,-3.8005],8:[47.8673,-4.0986],9:[55.6190,8.1353],10:[56.4900,8.2100],11:[45.0841,-1.1839],12:[45.3864,-1.1532],13:[44.8943,-1.2011],14:[45.0079,-1.1898],15:[44.2025,-1.2905],16:[44.0887,-1.3157],17:[43.8518,-1.3873],18:[43.8158,-1.3901],19:[43.7941,-1.4065],20:[43.6883,-1.4147],21:[43.6303,-1.4343],22:[43.5741,-1.4839],23:[43.6039,-1.4558],24:[43.9520,-1.3581],25:[47.8328,-4.3278],26:[47.8008,-4.3319],27:[48.2386,-4.5437],28:[47.9406,-4.3951],29:[56.1113,8.1182],30:[57.0342,8.4798],31:[55.9868,8.1337]};
+D.forEach(d=>{const c=COORDS[d.id];if(c){d.lat=c[0];d.lng=c[1];}});
 L.circleMarker([HOME.lat,HOME.lng],{radius:8,fillColor:HOME.color,color:'#fff',weight:2,fillOpacity:1}).addTo(map).bindTooltip('Köln (Start)');
+const cluster=L.markerClusterGroup({showCoverageOnHover:false,spiderfyOnMaxZoom:true,disableClusteringAtZoom:11,maxClusterRadius:38,spiderfyDistanceMultiplier:1.4}).addTo(map);
 const markers={};
-function mStyle(d){return {radius:sel===d.id?11:7,fillColor:d.tone==='danger'?'#A32D2D':REG[d.reg].color,color:d.tone==='warning'?'#BA7517':(d.tone==='danger'?'#A32D2D':'#fff'),weight:sel===d.id?3:2,fillOpacity:d.tone==='info'?0.55:0.95};}
-D.forEach(d=>{const m=L.circleMarker([d.lat,d.lng],mStyle(d)).bindTooltip(d.n+' — '+d.area);m.on('click',()=>select(d.id,false));markers[d.id]=m;});
-function refreshMarkers(){D.forEach(d=>{const m=markers[d.id];if(shown(d)){m.setStyle(mStyle(d));if(!map.hasLayer(m))m.addTo(map);}else if(map.hasLayer(m))map.removeLayer(m);});}
+function dotIcon(d){const c=d.tone==='danger'?'#A32D2D':REG[d.reg].color;const ring=d.tone==='warning'?'#BA7517':(d.tone==='danger'?'#A32D2D':'#fff');const s=sel===d.id?22:16;return L.divIcon({className:'',iconSize:[s,s],iconAnchor:[s/2,s/2],html:`<div style="width:${s}px;height:${s}px;border-radius:50%;background:${c};border:2px solid ${ring};box-shadow:0 0 0 1.5px rgba(0,0,0,.3);${d.tone==='info'?'opacity:.72;':''}"></div>`});}
+function popupHtml(d){const u=imgUrls(d)[0];const img=u?`<img src="${u}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'">`:'';return `<div style="width:208px"><div style="position:relative;height:104px;border-radius:6px;overflow:hidden;background:var(--color-background-secondary);margin-bottom:7px"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">${illus(d.reg)}</div>${img}</div><div style="font-size:14px;font-weight:500;display:flex;align-items:center;gap:5px">${flagSvg(d.reg)} ${d.n}</div><div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:5px">${d.area} · ${depLabel(d)}</div><div style="margin-bottom:5px">${badge(d)}</div><div style="font-size:12px;color:var(--color-text-secondary)"><i class="ti ti-cash" aria-hidden="true"></i> ${d.ptext||'auf Anfrage'} · <i class="ti ti-car" aria-hidden="true"></i> ca. ${d.hours} h</div><button onclick="select(${d.id},true)" style="margin-top:7px;width:100%;font-size:13px;padding:5px 0;border-radius:6px;border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);cursor:pointer">Details ansehen</button></div>`;}
+D.forEach(d=>{const m=L.marker([d.lat,d.lng],{icon:dotIcon(d)}).bindPopup(()=>popupHtml(d),{minWidth:208});markers[d.id]=m;});
+function refreshMarkers(){cluster.clearLayers();D.forEach(d=>{if(shown(d)){markers[d.id].setIcon(dotIcon(d));cluster.addLayer(markers[d.id]);}});}
 map.fitBounds(L.latLngBounds(D.map(d=>[d.lat,d.lng]).concat([[HOME.lat,HOME.lng]])).pad(0.08));
 const toneCss={success:['--color-background-success','--color-text-success'],info:['--color-background-info','--color-text-info'],warning:['--color-background-warning','--color-text-warning'],danger:['--color-background-danger','--color-text-danger']};
 function surfDots(n){let s='';for(let i=1;i<=3;i++)s+=`<span style="color:${i<=n?'var(--color-text-primary)':'var(--color-text-tertiary)'}">●</span>`;return s;}
@@ -280,7 +288,7 @@ function render(){
   refreshMarkers();
   document.getElementById('detail').innerHTML=sel?detailHtml(D.find(d=>d.id===sel)):`<div class="lbl" style="text-align:center;padding:.6rem;border:.5px dashed var(--color-border-secondary);border-radius:var(--border-radius-md)"><i class="ti ti-hand-finger" aria-hidden="true"></i> Pin oder Karte antippen für Details</div>`;
 }
-function select(id,scroll){sel=(sel===id?null:id);render();if(sel){const d=D.find(x=>x.id===sel);map.flyTo([d.lat,d.lng],Math.max(map.getZoom(),9),{duration:0.6});const m=markers[sel];if(m){m.bringToFront&&m.bringToFront();m.openTooltip();}if(scroll)document.getElementById('detail').scrollIntoView({behavior:'smooth',block:'start'});}}
+function select(id,scroll){sel=(sel===id?null:id);render();if(sel){const m=markers[sel];if(m&&cluster.hasLayer(m)){cluster.zoomToShowLayer(m,()=>m.openPopup());}if(scroll)document.getElementById('detail').scrollIntoView({behavior:'smooth',block:'start'});}}
 document.querySelectorAll('.chip[data-reg]').forEach(c=>c.onclick=()=>{reg=c.dataset.reg;document.querySelectorAll('.chip[data-reg]').forEach(x=>x.setAttribute('aria-pressed',x===c));render();});
 const at=document.getElementById('availToggle');at.onclick=()=>{onlyAvail=!onlyAvail;at.setAttribute('aria-pressed',onlyAvail);render();};
 const bt=document.getElementById('budgetToggle');bt.onclick=()=>{onlyBudget=!onlyBudget;bt.setAttribute('aria-pressed',onlyBudget);render();};
