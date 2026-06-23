@@ -227,6 +227,12 @@ function depLabel(d){
  if(d.reg==='daenemark')return (d.lat>=56.8?'Nordjylland':d.lat>=55.85?'Midtjylland':'Syddanmark')+' · Region';
  return d.lat>=44.6?'Gironde · Dép. 33':'Landes · Dép. 40';
 }
+const WEATHER={
+ atlantik:{day:26,night:16,rain:35,raindays:7,sea:21},
+ bretagne:{day:21,night:14,rain:45,raindays:10,sea:17},
+ daenemark:{day:20,night:12,rain:65,raindays:12,sea:16}
+};
+function weatherHtml(d){const w=WEATHER[d.reg];return `<div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:.6rem;padding:.5rem .7rem;background:var(--color-background-secondary);border-radius:var(--border-radius-md);font-size:12px;color:var(--color-text-secondary)"><span style="font-weight:500;color:var(--color-text-primary)"><i class="ti ti-sun" aria-hidden="true"></i> Klima Ende Juli (Ø)</span><span><i class="ti ti-temperature" aria-hidden="true"></i> Tag ${w.day}° · Nacht ${w.night}°</span><span><i class="ti ti-droplet" aria-hidden="true"></i> ~${w.rain} mm (~${w.raindays} Regentage)</span><span><i class="ti ti-ripple" aria-hidden="true"></i> Meer ~${w.sea}°</span></div>`;}
 function detailHtml(d){
   return `<div style="background:var(--color-background-primary);border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.15rem">
     <div style="margin:-1rem -1.15rem .9rem">${imgBox(d,'detail')}</div>
@@ -243,6 +249,7 @@ function detailHtml(d){
         ${metric('ti-ripple','Surf',surfDots(d.surf))}
         ${metric('ti-calendar-event','Verfügb. geprüft',CHECKED[d.id]||'noch offen · Reisefenster 20.–31.07.')}
       </div>
+      ${weatherHtml(d)}
       <div style="margin-top:.7rem;display:flex;gap:16px;flex-wrap:wrap"><a href="${d.url}" target="_blank" rel="noopener">Website / Buchung <span aria-hidden="true">↗</span></a><a href="https://www.google.com/search?tbm=isch&q=${encodeURIComponent('Camping '+d.n+' '+d.area)}" target="_blank" rel="noopener">Fotos ansehen <span aria-hidden="true">↗</span></a></div>
     </div>
   </div>`;
