@@ -58,7 +58,7 @@
   .head-art{display:flex;flex-direction:column;align-items:flex-end;gap:14px;flex-shrink:0}
   @media(max-width:600px){.head{flex-direction:column-reverse;align-items:stretch;gap:14px}.head-art{flex-direction:row-reverse;align-items:center;justify-content:space-between}}
   .kicker{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:var(--pine);margin:0 0 .4rem;display:flex;align-items:center;gap:7px}
-  h1{font-family:var(--font-display);font-size:clamp(30px,6.8vw,54px);font-weight:400;text-transform:uppercase;letter-spacing:.012em;margin:0;line-height:1.05}
+  h1{font-family:var(--font-display);font-size:clamp(30px,6.8vw,54px);font-weight:400;text-transform:uppercase;letter-spacing:.012em;margin:0;line-height:1.15}
   .accent{color:var(--accent)}
   .lede{font-size:14.5px;color:var(--color-text-secondary);margin:.8rem 0 .45rem;max-width:66ch}
   .hint{font-size:12.5px;color:var(--color-text-tertiary);margin:0 0 1rem}
@@ -190,7 +190,14 @@ const D=[
  {id:29,n:"Søndervig Camping",area:"Søndervig (DK)",reg:"daenemark",lat:56.112,lng:8.117,price:447,ptext:"€447",est:false,over:false,km:830,hours:8,surf:3,beach:"600 m",profil:"★ DK-Bestwert: Dünen, 600 m zum Nordsee-Surfstrand, Zelte willkommen, im Budget. Offenes Gelände (wenig Schatten).",status:"frei · 38 Plätze",tone:"success",url:"https://sondervig.campsys.dk/"},
  {id:30,n:"Nystrup Klitmøller",area:"Klitmøller (DK)",reg:"daenemark",lat:57.034,lng:8.481,price:560,ptext:"ca. €560 (4180 DKK)",est:false,over:false,km:900,hours:9,surf:3,beach:"500 m",profil:"Cold Hawaii — DK-Surfmekka, 230V inkl., 500 m zum Strand. 3 Plätze frei (wenig Schatten), online buchbar.",status:"frei · 3 Plätze",tone:"success",url:"https://www.nystrupcampingklitmoller.dk/"},
  {id:31,n:"Hvide Sande Camping",area:"Hvide Sande (DK)",reg:"daenemark",lat:55.987,lng:8.135,price:434,ptext:"ca. €434",est:false,over:false,km:820,hours:8,surf:2,beach:"~200–400 m",profil:"Familiär zwischen Nordsee und Fjord, ~300 m zum Strand; Wind/Lern-Surf. 3 Plätze frei (Bereich Kullervej).",status:"frei · 3 Plätze",tone:"success",url:"https://hvidesandecamping.dk/"},
- {id:32,n:"Camping Les Pins",area:"Crozon (Morgat)",reg:"bretagne",lat:48.2366,lng:-4.5174,price:325,ptext:"ca. €250–400",est:true,over:false,km:1150,hours:12,surf:2,beach:"Morgat 2 km / Goulien 3 km",profil:"Tipp von Goulien: 3★, 121 Stellplätze (Zelt/Auto), bewaldet; Morgat-Strand ~2 km, Surf La Palue nahe.",status:"Tipp · anfragen",tone:"info",url:"https://www.camping-crozon-lespins.com/"}
+ {id:32,n:"Camping Les Pins",area:"Crozon (Morgat)",reg:"bretagne",lat:48.2366,lng:-4.5174,price:325,ptext:"ca. €250–400",est:true,over:false,km:1150,hours:12,surf:2,beach:"Morgat 2 km / Goulien 3 km",profil:"Tipp von Goulien: 3★, 121 Stellplätze (Zelt/Auto), bewaldet; Morgat-Strand ~2 km, Surf La Palue nahe.",status:"Tipp · anfragen",tone:"info",url:"https://www.camping-crozon-lespins.com/"},
+ {id:33,n:"Merko Lacarra",area:"Acotz · St-Jean-de-Luz",reg:"atlantik",lat:43.4017,lng:-1.6326,price:300,ptext:"ca. €250–350",est:true,over:false,km:1290,hours:13,surf:2,beach:"~50 m (Cenitz/Mayarco)",profil:"★ Südlichster Treffer: echte Stellplätze auf festem, schattigem Grasboden, nur ~50 m zum sanften Beachbreak Cenitz — top mit Kleinkind. Eigene Online-Buchung.",status:"online buchbar",tone:"success",url:"https://www.merkolacarra.com/"},
+ {id:34,n:"Albret Plage",area:"Messanges",reg:"atlantik",lat:43.8252,lng:-1.3979,price:550,ptext:"ca. €450–650",est:true,over:false,km:1245,hours:12,surf:3,beach:"~300 m (Plage Sud)",profil:"Pinienwald, ~300 m zum Surfstrand; 2026 fast nur Stellplätze. Guter Ersatz für die ausgebuchten Moïsan/Sablères. Bodenfestigkeit kurz erfragen.",status:"online (Pitchup)",tone:"success",url:"https://www.albretplage.fr/"},
+ {id:35,n:"Côte d'Argent",area:"Hourtin-Plage",reg:"atlantik",lat:45.2188,lng:-1.1628,price:540,ptext:"ca. €430–650",est:true,over:false,km:1170,hours:11,surf:3,beach:"~300 m",profil:"★ Stark fürs Profil: ~300 m Strand, fester Pinienwaldboden, Dachzelte ausdrücklich erlaubt (1 Fzg/Platz, 10A). Stellplatz+Strom 20.–31.07. tel./Mail bestätigen.",status:"anfragen · Dachzelt OK",tone:"info",url:"https://www.camping-cote-dargent.com/"},
+ {id:36,n:"Camping de l'Océan (L'Amélie)",area:"Soulac-sur-Mer",reg:"atlantik",lat:45.5150,lng:-1.1548,price:330,ptext:"ca. €300–360",est:true,over:false,km:1130,hours:11,surf:2,beach:"~300 m (L'Amélie)",profil:"Eigenständiger reiner Stellplatzplatz im Pinienwald (NICHT der ausgebuchte Carcans-Platz!), ~300 m zum überwachten Strand L'Amélie. Günstig. Nur tel./Mail buchbar.",status:"anfragen (Tel.)",tone:"info",url:"https://www.google.com/search?q=Camping+de+l%27Océan+L%27Amélie+Soulac"},
+ {id:37,n:"Campéole Le Vivier",area:"Biscarrosse-Plage",reg:"atlantik",lat:44.4470,lng:-1.2493,price:240,ptext:"ca. €170–310",est:true,over:false,km:1230,hours:12,surf:2,beach:"~800 m",profil:"Budget-Sieger & online buchbar: Landes-Pinienwald, fester Waldboden, ~800 m direkter Fußweg zum Beachbreak. Sicherster Plan B (sofort prüfbar).",status:"online buchbar",tone:"success",url:"https://reservation.biscagrandslacs.com/camping-campeole-le-vivier.html"},
+ {id:38,n:"Camping Les Chênes",area:"Vieux-Boucau",reg:"atlantik",lat:43.7896,lng:-1.3979,price:330,ptext:"ca. €300–360",est:true,over:false,km:1240,hours:12,surf:2,beach:"~1 km (Waldweg)",profil:"348 Stellplätze in der Pinède, eher fester Boden, ~1 km zum Strand (gut per Rad) — meist auch in der Hochsaison noch frei. Nur per Anfrage.",status:"anfragen",tone:"info",url:"https://www.campingleschenes.fr/"},
+ {id:39,n:"CHM Montalivet",area:"Montalivet",reg:"atlantik",lat:45.3878,lng:-1.1502,price:600,ptext:"ca. €500–700",est:true,over:false,km:1150,hours:11,surf:2,beach:"≤500 m",profil:"Große Domäne mit festem Boden („terre dure“) + Pinienschatten, ≤500 m zum Strand; Transit-Stellplätze frei (10% 18.–25.07.). Hinweis: Naturisten-Domäne.",status:"frei · Naturistendomäne",tone:"info",url:"https://www.chm-montalivet.com/"}
 ];
 
 const CHECKED={
@@ -223,7 +230,14 @@ const CHECKED={
  28:"3★ · Domain nicht prüfbar — 300 m Penhors",
  29:"20.–29.07. frei · 38 Plätze · €447 (live)",
  30:"Antwort: 22.–31.07. frei · 3 Plätze (wenig Schatten) · 4180 DKK ~€560 · online buchbar",
- 31:"Antwort: 3 Plätze frei (Bereich Kullervej) · ~€434 · Surfspot direkt"
+ 31:"Antwort: 3 Plätze frei (Bereich Kullervej) · ~€434 · Surfspot direkt",
+ 33:"Web-Recherche: eigene Online-Buchung · ~50 m Cenitz · fester Grasboden",
+ 34:"Web-Recherche: ~300 m Plage Sud · 2026 fast nur Stellplätze · Pitchup live prüfbar",
+ 35:"Web-Recherche: Dachzelt erlaubt, fester Pinienboden · Stellplatz+Strom tel. bestätigen",
+ 36:"Web-Recherche: reiner Stellplatzplatz im Pinienwald, ~300 m · nur tel./Mail",
+ 37:"Web-Recherche: online buchbar (biscagrandslacs) · fester Waldboden · ~800 m",
+ 38:"Web-Recherche: 348 Pinien-Stellplätze, eher fest · nur per Anfrage",
+ 39:"Web-Recherche: fester Boden („terre dure“), ≤500 m · Naturisten-Domäne · 10% 18.–25.07."
 };
 const IMG={
  1:["https://www.campingdespins.fr/wp-content/uploads/2021/03/camping-pins-soulac-cta-ecolodges.jpg","https://www.campingdespins.fr/wp-content/uploads/2021/05/mobil-home-location-soulac-1.jpg","https://www.campingdespins.fr/wp-content/uploads/2021/03/camping-pins-soulac-cta-emplacements-tente.jpg"],
