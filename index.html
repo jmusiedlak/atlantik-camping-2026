@@ -64,7 +64,7 @@
   .hint{font-size:12.5px;color:var(--color-text-tertiary);margin:0 0 1rem}
   .rule{height:3px;width:54px;background:var(--accent);border-radius:2px;margin:.35rem 0 1.2rem}
   .hero{display:block;height:auto;margin:.4rem 0 1.2rem}
-  .paola{width:clamp(150px,38vw,205px);aspect-ratio:640/460;background:var(--color-text-primary);-webkit-mask:url(paola.png) center/contain no-repeat;mask:url(paola.png) center/contain no-repeat}
+  .paola{width:clamp(140px,34vw,190px);aspect-ratio:1/1;background:var(--color-text-primary);-webkit-mask:url(paola_surft_2.png) center/contain no-repeat;mask:url(paola_surft_2.png) center/contain no-repeat}
   .mapexp{width:34px;height:34px;border-radius:8px!important;border:.5px solid var(--color-border-secondary)!important;background:var(--color-background-primary);color:var(--color-text-primary);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:17px;box-shadow:var(--shadow)}
   .mapexp:hover{background:var(--color-background-secondary)}
   body.mapfull{overflow:hidden}
@@ -203,7 +203,7 @@ const D=[
  {id:35,n:"Côte d'Argent",area:"Hourtin-Plage",reg:"atlantik",lat:45.2188,lng:-1.1628,price:540,ptext:"ca. €430–650",est:true,over:false,km:1170,hours:11,surf:3,beach:"~300 m",profil:"★ Stark fürs Profil: ~300 m Strand, fester Pinienwaldboden, Dachzelte ausdrücklich erlaubt (1 Fzg/Platz, 10A). Stellplatz+Strom 20.–31.07. tel./Mail bestätigen.",status:"ausgebucht (20.07–19.08)",tone:"danger",url:"https://www.camping-cote-dargent.com/"}, {id:37,n:"Campéole Le Vivier",area:"Biscarrosse-Plage",reg:"atlantik",lat:44.4470,lng:-1.2493,price:790,ptext:"€790 (22.–29.07.)",est:false,over:true,km:1230,hours:12,surf:2,beach:"~800 m",profil:"4★ MS-Vacances/Campéole-Clubresort im Landes-Pinienwald, ~800 m zum Beachbreak. 22.–29.07.2026 verfügbar für €790/Woche (geprüft 24.06) — kein Budget-Platz, aber frei und online buchbar.",status:"frei · 22.–29.07. · €790",tone:"success",url:"https://www.ms-vacances.com/de/hebergement-details/?id=167&id_groupe=167,166,165,164,163,162&catalogue=6938"},
  {id:38,n:"Camping Les Chênes",area:"Vieux-Boucau",reg:"atlantik",lat:43.7896,lng:-1.3979,price:330,ptext:"ca. €300–360",est:true,over:false,km:1240,hours:12,surf:2,beach:"~1 km (Waldweg)",profil:"348 Stellplätze in der Pinède, eher fester Boden, ~1 km zum Strand (gut per Rad) — meist auch in der Hochsaison noch frei. Nur per Anfrage.",status:"anfragen",tone:"info",url:"https://www.campingleschenes.fr/"},
  {id:40,n:"Le Clos des Pins",area:"Longeville-sur-Mer (Vendée)",reg:"atlantik",lat:46.392,lng:-1.466,price:null,ptext:"auf Anfrage",est:false,over:false,km:1090,hours:11,surf:3,beach:"200 m · Surf Bud Bud 400 m",profil:"★ Pinède-Volltreffer: 4★ im Seekiefernwald, 200 m zum Strand Les Conches, 400 m zum Beachbreak Bud Bud (Anfänger/Intermediate, ganzjährig konstant). 22.–29.07. + alle Hochsaisonwochen ausgebucht (online bestätigt).",status:"ausgebucht",tone:"danger",url:"https://www.campingclosdespins.com/"},
- {id:43,n:"Camping des Pins",area:"Notre-Dame-de-Monts (Vendée)",reg:"atlantik",lat:46.812,lng:-2.132,price:null,ptext:"auf Anfrage",est:false,over:false,km:1045,hours:10,surf:2,beach:"800 m (durch die Pinède)",profil:"Am Rand des Staatsforsts Pays de Monts, 800 m zum Strand mit Direktzugang durch die Kiefern; sanfter Lern-/Familiensurf. Verfügbarkeit/Preis noch prüfen.",status:"online (Pitchup) · prüfen",tone:"info",url:"https://www.pitchup.com/campsites/france/pays-de-la-loire/vendee/notre-dame-de-monts/camping_des_pins/?arrive=2026-07-20&depart=2026-07-30"}];
+ {id:43,n:"Camping des Pins",area:"Notre-Dame-de-Monts (Vendée)",reg:"atlantik",lat:46.812,lng:-2.132,price:413,ptext:"€413 (20.–30.07.)",est:false,over:false,km:1045,hours:10,surf:2,beach:"800 m (durch die Pinède)",profil:"Am Rand des Staatsforsts Pays de Monts, 800 m zum Strand mit Direktzugang durch die Kiefern; sanfter Lern-/Familiensurf. Pitchup 24.06: frei, Electric Grass Pitch 90 m² (Rasen, fest genug fürs Auto), €413/10 N, nur noch 7 Plätze, 8,2/10.",status:"frei · €413 · 7 Plätze",tone:"success",url:"https://www.pitchup.com/campsites/france/pays-de-la-loire/vendee/notre-dame-de-monts/camping_des_pins/?arrive=2026-07-20&depart=2026-07-30"}];
 
 const CHECKED={
  1:"20.–29.07. · Pitchup: 8 frei (22.–31.: 4)",
@@ -241,7 +241,7 @@ const CHECKED={
  35:"Antwort 24.06: 20.07–19.08 ausgebucht · außerhalb frei (online buchbar) · Dachzelt erlaubt", 37:"Geprüft 24.06: 22.–29.07. frei · €790/Woche (MS Vacances) · 4★ Clubresort, kein Budget-Platz",
  38:"Anfrage gesendet 24.06 (accueil@campingleschenes.fr) — Antwort ausstehend · 348 Pinien-Stellplätze, eher fest",
  40:"Geprüft (Browser): AUSGEBUCHT 22.–29.07. + alle Hochsaisonwochen (eSeason) · Pinède, 200 m Strand · ~245–273 €/7N Listenpreis",
- 43:"Pinède, 800 m Strand · Emplacements ~80 m² (Hecken) · über Pitchup buchbar (Verfügbarkeit/Preis prüfen) · direkt: info@camping-despins85.com / 02 51 58 83 75"};
+ 43:"Pitchup 24.06: FREI · Electric Grass Pitch 90 m² (Rasen) · €413/10 N (20.–30.07.) · nur 7 Plätze · 8,2/10 · Pinède, 800 m Strand · direkt: info@camping-despins85.com / 02 51 58 83 75"};
 const IMG={
  1:["https://www.campingdespins.fr/wp-content/uploads/2021/03/camping-pins-soulac-cta-ecolodges.jpg","https://www.campingdespins.fr/wp-content/uploads/2021/05/mobil-home-location-soulac-1.jpg","https://www.campingdespins.fr/wp-content/uploads/2021/03/camping-pins-soulac-cta-emplacements-tente.jpg"],
  3:["https://www.camping-eurosol.com/wp-content/uploads/2025/10/2025_Romanee_Eurosol_Plage_012.jpg","https://www.camping-eurosol.com/wp-content/uploads/2025/10/2025_Romanee_Eurosol_Espace_aquatique_001.jpg","https://www.camping-eurosol.com/wp-content/uploads/2024/07/Eurosol-2-1000x1000.jpeg"],
@@ -348,7 +348,7 @@ const KANAL={
  35:{via:'mail',ref:'info@cca33.com'}, 37:{via:'online',ref:'MS-Vacances Online-Buchung · 22.–29.07. €790'},
  38:{via:'mail',ref:'accueil@campingleschenes.fr'},
  40:{via:'web',ref:'Ausgebucht (online bestätigt, eSeason)'},
- 43:{via:'online',ref:'Pitchup buchbar · Verfügbarkeit/Preis prüfen'}};
+ 43:{via:'online',ref:'Pitchup: frei · €413/10 N · 7 Plätze (geprüft 24.06)'}};
 const VIA={
  online:{t:'Direkt online buchbar',i:'ti-shopping-cart',c:'success'},
  mail:{t:'Per E-Mail angefragt',i:'ti-mail',c:'info'},
