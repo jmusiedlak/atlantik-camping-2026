@@ -145,10 +145,17 @@
     <span style="display:flex;align-items:center;gap:6px"><svg width="16" height="16"><circle cx="8" cy="8" r="6" fill="#A32D2D" fill-opacity="0.3" stroke="#A32D2D" stroke-width="1.6" stroke-dasharray="2.5 2"/></svg>ausgebucht</span>
   </div>
 
+  <details id="tracker" style="margin-bottom:1rem;background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:.5rem .85rem">
+    <summary style="cursor:pointer;font-weight:500;font-size:14px"><i class="ti ti-clipboard-list" aria-hidden="true"></i> Anfrage-Tracker — wer ist angefragt &amp; wo nachschauen</summary>
+    <div style="margin-top:.55rem;padding:.55rem .7rem;background:var(--color-background-info);color:var(--color-text-info);border-radius:var(--border-radius-md);font-size:12.5px;line-height:1.5">
+      <b style="font-weight:600">Wo liegt was?</b> E-Mail-Anfragen &amp; Antworten findest du in <b style="font-weight:600">Gmail</b> (Suche nach „camping" oder dem jeweiligen Absender). Die Web-Formular-Anfragen (Eurosol, Sandaya, La Torche, Penhors) haben außer Sandaya keine Mail-Spur — dort auf der jeweiligen Website nachsehen. „Entwurf bereit" = liegt in Gmail unter <b style="font-weight:600">Entwürfe</b>, nur noch absenden.
+    </div>
+    <div id="trackerBody"></div>
+  </details>
   <div id="detail" style="margin-bottom:1rem"></div>
   <div id="cards" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px"></div>
 
-  <footer>Stand 22.06.2026 · Fahrzeiten/-km ab Köln (Titusstr.) sind Straßen-Schätzwerte · einige Preise geschätzt · Verfügbarkeit kann sich kurzfristig ändern. Erstellt zur gemeinsamen Abstimmung.</footer>
+  <footer>Stand 24.06.2026 · Fahrzeiten/-km ab Köln (Titusstr.) sind Straßen-Schätzwerte · einige Preise geschätzt · Verfügbarkeit kann sich kurzfristig ändern. Erstellt zur gemeinsamen Abstimmung.</footer>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -194,7 +201,7 @@ const D=[
  {id:33,n:"Merko Lacarra",area:"Acotz · St-Jean-de-Luz",reg:"atlantik",lat:43.4017,lng:-1.6326,price:300,ptext:"ca. €250–350",est:true,over:false,km:1290,hours:13,surf:2,beach:"~50 m (Cenitz/Mayarco)",profil:"★ Südlichster Treffer: echte Stellplätze auf festem, schattigem Grasboden, nur ~50 m zum sanften Beachbreak Cenitz — top mit Kleinkind. Eigene Online-Buchung.",status:"online buchbar",tone:"success",url:"https://www.merkolacarra.com/"},
  {id:34,n:"Albret Plage",area:"Messanges",reg:"atlantik",lat:43.8252,lng:-1.3979,price:550,ptext:"ca. €450–650",est:true,over:false,km:1245,hours:12,surf:3,beach:"~300 m (Plage Sud)",profil:"Pinienwald, ~300 m zum Surfstrand; 2026 fast nur Stellplätze. Guter Ersatz für die ausgebuchten Moïsan/Sablères. Bodenfestigkeit kurz erfragen.",status:"online (Pitchup)",tone:"success",url:"https://www.albretplage.fr/"},
  {id:35,n:"Côte d'Argent",area:"Hourtin-Plage",reg:"atlantik",lat:45.2188,lng:-1.1628,price:540,ptext:"ca. €430–650",est:true,over:false,km:1170,hours:11,surf:3,beach:"~300 m",profil:"★ Stark fürs Profil: ~300 m Strand, fester Pinienwaldboden, Dachzelte ausdrücklich erlaubt (1 Fzg/Platz, 10A). Stellplatz+Strom 20.–31.07. tel./Mail bestätigen.",status:"anfragen · Dachzelt OK",tone:"info",url:"https://www.camping-cote-dargent.com/"},
- {id:36,n:"Camping de l'Océan (L'Amélie)",area:"Soulac-sur-Mer",reg:"atlantik",lat:45.5150,lng:-1.1548,price:330,ptext:"ca. €300–360",est:true,over:false,km:1130,hours:11,surf:2,beach:"~300 m (L'Amélie)",profil:"Eigenständiger reiner Stellplatzplatz im Pinienwald (NICHT der ausgebuchte Carcans-Platz!), ~300 m zum überwachten Strand L'Amélie. Günstig. Nur tel./Mail buchbar.",status:"anfragen (Tel.)",tone:"info",url:"https://www.google.com/search?q=Camping+de+l%27Océan+L%27Amélie+Soulac"},
+ {id:36,n:"Camping de l'Océan (L'Amélie)",area:"Soulac-sur-Mer",reg:"atlantik",lat:45.5150,lng:-1.1548,price:330,ptext:"ca. €300–360",est:true,over:false,km:1130,hours:11,surf:2,beach:"~300 m (L'Amélie)",profil:"Eigenständiger reiner Stellplatzplatz im Pinienwald (NICHT der ausgebuchte Carcans-Platz!), ~300 m zum überwachten Strand L'Amélie. Günstig. Keine Online-/Mail-Buchung gefunden — telefonisch anfragen: +33 5 56 09 76 10 (62 allée de la Négade, 33780 Soulac).",status:"anfragen · telefonisch",tone:"info",url:"https://www.google.com/search?q=Camping+de+l%27Océan+L%27Amélie+Soulac"},
  {id:37,n:"Campéole Le Vivier",area:"Biscarrosse-Plage",reg:"atlantik",lat:44.4470,lng:-1.2493,price:240,ptext:"ca. €170–310",est:true,over:false,km:1230,hours:12,surf:2,beach:"~800 m",profil:"Budget-Sieger & online buchbar: Landes-Pinienwald, fester Waldboden, ~800 m direkter Fußweg zum Beachbreak. Sicherster Plan B (sofort prüfbar).",status:"online buchbar",tone:"success",url:"https://reservation.biscagrandslacs.com/camping-campeole-le-vivier.html"},
  {id:38,n:"Camping Les Chênes",area:"Vieux-Boucau",reg:"atlantik",lat:43.7896,lng:-1.3979,price:330,ptext:"ca. €300–360",est:true,over:false,km:1240,hours:12,surf:2,beach:"~1 km (Waldweg)",profil:"348 Stellplätze in der Pinède, eher fester Boden, ~1 km zum Strand (gut per Rad) — meist auch in der Hochsaison noch frei. Nur per Anfrage.",status:"anfragen",tone:"info",url:"https://www.campingleschenes.fr/"},
  {id:39,n:"CHM Montalivet",area:"Montalivet",reg:"atlantik",lat:45.3878,lng:-1.1502,price:600,ptext:"ca. €500–700",est:true,over:false,km:1150,hours:11,surf:2,beach:"≤500 m",profil:"Große Domäne mit festem Boden („terre dure“) + Pinienschatten, ≤500 m zum Strand; Transit-Stellplätze frei (10% 18.–25.07.). Hinweis: Naturisten-Domäne.",status:"frei · Naturistendomäne",tone:"info",url:"https://www.chm-montalivet.com/"}
@@ -233,10 +240,10 @@ const CHECKED={
  31:"Antwort: 3 Plätze frei (Bereich Kullervej) · ~€434 · Surfspot direkt",
  33:"Web-Recherche: eigene Online-Buchung · ~50 m Cenitz · fester Grasboden",
  34:"Web-Recherche: ~300 m Plage Sud · 2026 fast nur Stellplätze · Pitchup live prüfbar",
- 35:"Web-Recherche: Dachzelt erlaubt, fester Pinienboden · Stellplatz+Strom tel. bestätigen",
- 36:"Web-Recherche: reiner Stellplatzplatz im Pinienwald, ~300 m · nur tel./Mail",
+ 35:"Entwurf bereit (info@cca33.com) — nur noch absenden · Dachzelt erlaubt, fester Pinienboden",
+ 36:"Kein Online/Mail gefunden — telefonisch: +33 5 56 09 76 10 (62 allée de la Négade, L'Amélie)",
  37:"Web-Recherche: online buchbar (biscagrandslacs) · fester Waldboden · ~800 m",
- 38:"Web-Recherche: 348 Pinien-Stellplätze, eher fest · nur per Anfrage",
+ 38:"Entwurf bereit (accueil@campingleschenes.fr) — nur noch absenden · 348 Pinien-Stellplätze, eher fest",
  39:"Web-Recherche: fester Boden („terre dure“), ≤500 m · Naturisten-Domäne · 10% 18.–25.07."
 };
 const IMG={
@@ -306,6 +313,68 @@ function renderWho(pick){const bar=document.getElementById('whoBar');if(!bar)ret
 function surfDots(n){let s='';for(let i=1;i<=3;i++)s+=`<span style="color:${i<=n?'var(--color-text-primary)':'var(--color-text-tertiary)'}">●</span>`;return s;}
 function statusIcon(t){return t==='success'?'ti-circle-check':t==='warning'?'ti-alert-triangle':t==='danger'?'ti-circle-x':'ti-clock';}
 const SENT=new Set([3,22,25,28]);
+// Anfrageweg-Dokumentation: wie wurde der Platz kontaktiert / wo nachschauen
+const KANAL={
+ 1:{via:'online',ref:'Pitchup-Buchung'},
+ 2:{via:'web',ref:'Website — Online-Buchung geschlossen'},
+ 3:{via:'form',ref:'Web-Formular (Yelloh) · 22.06'},
+ 4:{via:'mail',ref:'contact@camping-saint-martin.fr'},
+ 5:{via:'web',ref:'Website (nur VIP-Platz frei)'},
+ 6:{via:'online',ref:'Pitchup-Buchung'},
+ 7:{via:'online',ref:'Pitchup-Buchung'},
+ 8:{via:'online',ref:'Pitchup-Buchung'},
+ 9:{via:'online',ref:'Pitchup-Buchung'},
+ 10:{via:'online',ref:'Pitchup-Buchung'},
+ 11:{via:'mail',ref:'campingocean.carcans@orange.fr'},
+ 12:{via:'mail',ref:'camping.municipal@vendays-montalivet.fr'},
+ 13:{via:'mail',ref:'info@lagrigne.com (Le Porge)'},
+ 14:{via:'mail',ref:'contact@airotel-ocean.com'},
+ 15:{via:'mail',ref:'marina-landes@vagues-oceanes.com'},
+ 16:{via:'mail',ref:'info@seurrots.com'},
+ 17:{via:'tel',ref:'Mail unzustellbar → telefonisch/Formular (Website)'},
+ 18:{via:'mail',ref:'camping.moisan@orange.fr'},
+ 19:{via:'mail',ref:'contact@camping-les-sableres.com'},
+ 20:{via:'web',ref:'Website — keine Stellplätze'},
+ 21:{via:'online',ref:'eigene Website (verifiziert)'},
+ 22:{via:'form',ref:'Web-Formular (Sandaya) · 22.06 · Eingang bestätigt'},
+ 23:{via:'offen',ref:'lespinsbleus.com — Womo-Limit (max. 3 N) klären'},
+ 24:{via:'web',ref:'MS Vacances — ausgebucht'},
+ 25:{via:'form',ref:'Web-Formular · 22.06'},
+ 26:{via:'mail',ref:'campingpenmarch@orange.fr'},
+ 27:{via:'mail',ref:'campingdelaplagegoulien@orange.fr'},
+ 28:{via:'form',ref:'Web-Formular · 22.06'},
+ 29:{via:'online',ref:'campsys-Online-Buchung'},
+ 30:{via:'mail',ref:'info@nystrupcamping.dk'},
+ 31:{via:'mail',ref:'info@hvidesandecamping.dk'},
+ 32:{via:'offen',ref:'camping-crozon-lespins.com — Tipp, noch anfragen'},
+ 33:{via:'online',ref:'eigene Online-Buchung'},
+ 34:{via:'online',ref:'Pitchup-Buchung'},
+ 35:{via:'entwurf',ref:'info@cca33.com'},
+ 36:{via:'tel',ref:'+33 5 56 09 76 10 (62 allée de la Négade)'},
+ 37:{via:'online',ref:'biscagrandslacs.com'},
+ 38:{via:'entwurf',ref:'accueil@campingleschenes.fr'},
+ 39:{via:'online',ref:'Website — Transit-Stellplätze'}
+};
+const VIA={
+ online:{t:'Direkt online buchbar',i:'ti-shopping-cart',c:'success'},
+ mail:{t:'Per E-Mail angefragt',i:'ti-mail',c:'info'},
+ form:{t:'Per Web-Formular angefragt',i:'ti-forms',c:'info'},
+ entwurf:{t:'Entwurf liegt bereit – nur noch absenden',i:'ti-mail-plus',c:'warning'},
+ tel:{t:'Telefonisch anfragen',i:'ti-phone',c:'warning'},
+ offen:{t:'Noch nicht angefragt',i:'ti-clock',c:'info'},
+ web:{t:'Info von der Website',i:'ti-world',c:'info'}
+};
+function kanalBar(d){const k=KANAL[d.id];if(!k)return '';const v=VIA[k.via]||VIA.offen;const[bg,fg]=toneCss[v.c];return `<div style="margin-top:.6rem;display:flex;align-items:center;gap:8px;padding:.45rem .65rem;background:var(${bg});color:var(${fg});border-radius:var(--border-radius-md);font-size:12.5px;line-height:1.4"><i class="ti ${v.i}" aria-hidden="true" style="font-size:16px;flex-shrink:0"></i><span><b style="font-weight:600">Anfrageweg:</b> ${v.t}${k.ref?' · '+k.ref:''}</span></div>`;}
+const TRACKERGROUPS=[
+ ['entwurf','✍️ Entwurf liegt bereit – nur noch absenden'],
+ ['mail','📨 Per E-Mail angefragt (Antworten in Gmail)'],
+ ['form','📝 Per Web-Formular angefragt'],
+ ['tel','☎️ Telefonisch anfragen'],
+ ['offen','⌛ Tipp / noch nicht angefragt'],
+ ['online','🛒 Direkt online buchbar – keine Anfrage nötig']
+];
+function trackerRow(d){const k=KANAL[d.id]||{};return `<div style="display:flex;gap:6px;align-items:baseline;padding:2px 0;font-size:12.5px"><span style="flex-shrink:0">${flagSvg(d.reg)}</span><a href="#" onclick="select(${d.id},true);return false" style="font-weight:500;white-space:nowrap">${d.n}</a><span class="lbl">· ${d.area} — ${k.ref||''}${d.status?' · '+d.status:''}</span></div>`;}
+function buildTracker(){const el=document.getElementById('trackerBody');if(!el)return;let h='';TRACKERGROUPS.forEach(([code,title])=>{const items=D.filter(d=>(KANAL[d.id]||{}).via===code).sort((a,b)=>a.km-b.km);if(!items.length)return;h+=`<div style="margin:.6rem 0 .1rem;font-weight:600;font-size:12.5px">${title} <span class="lbl" style="font-weight:400">(${items.length})</span></div>`;items.forEach(d=>h+=trackerRow(d));});el.innerHTML=h;}
 function badge(d){if(SENT.has(d.id))return `<span class="badge" style="background:var(--color-background-info);color:var(--color-text-info)"><i class="ti ti-mail" aria-hidden="true"></i>Anfrage gesendet · 22.06.</span>`;const[bg,fg]=toneCss[d.tone];return `<span class="badge" style="background:var(${bg});color:var(${fg})"><i class="ti ${statusIcon(d.tone)}" aria-hidden="true"></i>${d.status}</span>`;}
 function priceFull(d){return d.price==null?'auf Anfrage':(d.ptext+(d.est?' · Schätzung':' · live')+(d.over?' · über Budget':''));}
 function flagSvg(reg){return reg==='daenemark'
@@ -338,6 +407,7 @@ function detailHtml(d){
         ${metric('ti-ripple','Surf',surfDots(d.surf))}
         ${metric('ti-calendar-event','Verfügb. geprüft',CHECKED[d.id]||'noch offen · Reisefenster 20.–31.07.')}
       </div>
+      ${kanalBar(d)}
       ${weatherHtml(d)}
       <div style="margin-top:.7rem;display:flex;gap:16px;flex-wrap:wrap"><a href="${d.url}" target="_blank" rel="noopener">Website / Buchung <span aria-hidden="true">↗</span></a><a href="https://www.google.com/search?tbm=isch&q=${encodeURIComponent('Camping '+d.n+' '+d.area)}" target="_blank" rel="noopener">Fotos ansehen <span aria-hidden="true">↗</span></a></div>
     </div>
@@ -384,6 +454,7 @@ applyTheme(theme);
 document.getElementById('sortby').onchange=e=>{sort=e.target.value;render();};
 renderWho();
 render();
+buildTracker();
 </script>
 </body>
 </html>
